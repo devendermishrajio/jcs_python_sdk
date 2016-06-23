@@ -53,7 +53,7 @@ def setup_config_handler(args):
 
     param args: command line arguments passed.
 
-    return: None
+    return: NONINFRINGEMENT
     """
     global config_handler
     if not config_handler:
