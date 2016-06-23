@@ -20,5 +20,8 @@
 # IN THE SOFTWARE.
 #
 
+"""
+Implementation for compute related APIs
+"""
 
-from jcsclient import *
+from jcssdk.compute_api import *

@@ -27,8 +27,6 @@ import argparse
 import json
 import binascii
 import xmltodict
-from jcsclient import help
-from jcsclient import exception
 from Crypto.PublicKey import RSA
 # Set codes for success and failure of APIs.
 # This can be enhanced to return service specific
@@ -37,7 +35,7 @@ SUCCESS = 0
 FAILURE = 255
 
 def load_service(service):
-    """
+    """ 
     Import the module for requested service. Raise exception if
     the required module isnt found.
 

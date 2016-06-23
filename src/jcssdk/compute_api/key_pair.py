@@ -21,8 +21,8 @@
 #
 
 import argparse
-from jcsclient import utils
-from jcsclient import requestify
+from jcssdk import utils
+from jcssdk import requestify
 
 def create_key_pair(url, verb, headers, version, args):
     params = {}

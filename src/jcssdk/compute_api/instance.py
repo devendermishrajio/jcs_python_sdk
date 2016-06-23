@@ -23,9 +23,8 @@
 import base64
 import binascii
 import requests
-from jcsclient import exception
-from jcsclient import utils
-from jcsclient import requestify
+from jcssdk import utils
+from jcssdk import requestify
 
 def describe_instances(url, verb, headers, version, args):
     params = {}

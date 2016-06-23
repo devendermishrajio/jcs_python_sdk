@@ -21,12 +21,11 @@
 #
 
 import config
-from jcsclient import help
-from jcsclient.compute_api import image
-from jcsclient.compute_api import key_pair
-from jcsclient.compute_api import instance
-from jcsclient.compute_api import volume
-from jcsclient.compute_api import snapshot
+from compute_api import image
+from jcssdk.compute_api import key_pair
+from jcssdk.compute_api import instance
+from jcssdk.compute_api import volume
+from jcssdk.compute_api import snapshot
 
 class Controller(object):
     """Compute Controller class

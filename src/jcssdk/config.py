@@ -21,6 +21,7 @@
 #
 
 import os
+from jcssdk import exception
 """
   The following endpoints can be overridden using environment variable
   The environment variable should be in the form of SERVICE_URL, where
@@ -31,7 +32,6 @@ import os
 """
 
 import argparse
-import exception
 
 endpoints = {
     'vpc'    : 'https://vpc.ind-west-1.jiocloudservices.com/',

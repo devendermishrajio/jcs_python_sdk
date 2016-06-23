@@ -4,7 +4,7 @@ class DescribeImagesRequest :
 		self.image_ids = None
 
 	def get_image_ids(self):
-		return image_ids
+		return self.image_ids
 
 	def set_image_ids(self,image_ids):
 		self.image_ids = image_ids

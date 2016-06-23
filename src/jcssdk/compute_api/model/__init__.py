@@ -21,4 +21,4 @@
 #
 
 
-from jcsclient.compute_api.model import *
+from jcssdk.compute_api.model import *

@@ -20,18 +20,5 @@
 # IN THE SOFTWARE.
 #
 
-import argparse
-from jcsclient import utils
-from jcsclient import requestify
 
-def describe_images(url, verb, headers, version, args):
-	params = {}
-	params['Action'] = utils.dash_to_camelcase(args[0])
-	params['Version'] = version
-	i=0
-	for image_id in args.get_image_ids():
-		params['ImageId'+i] = image_id
-		i = i+1;	
-	print params
-	# return requestify.make_request(url, verb, headers, params)
-    
+from jcssdk import *
