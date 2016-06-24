@@ -28,8 +28,9 @@ def describe_images(url, verb, headers, version, image_ids):
 	params = {}
 	params['Action'] = 'DescribeImages'
 	params['Version'] = version
-	i=0
+
 	if args.get_image_ids() != None:
+		i=1
 		for image_id in args.get_image_ids():
 			params['ImageId.'+str(i)] = image_id
 			i = i+1;	

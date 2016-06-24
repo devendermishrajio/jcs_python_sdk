@@ -18,44 +18,9 @@
 # WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
-#
 
-from jcssdk import utils
-from jcssdk import requestify
-
-
-def create_snapshot(url, verb, headers, version, volume_id):
-    params = {}
-    params['Action'] = 'CreateSnapshot'
-    params['Version'] = version
-    params['VolumeId'] = volume_id
-
-def delete_snapshot(url, verb, headers, version, snapshot_id):
-    params = {}
-    params['Action'] = 'DeleteSnapshot'
-    params['Version'] = version
-    params['SnapshotId'] = snapshot_id
-    return requestify.make_request(url, verb, headers, params)
-
-def describe_snapshots(url, verb, headers, version, snpashot_ids = None, max_results = -1, next_token = "", detail = True):
-    params = {}
-    params['Action'] = 'DescribeSnapshots'
-    params['Version'] = version
-
-    if not snpashot_ids == None :
-    	i=1
-    	for snapshot_id in snpashot_ids :
-    		params["SnapshotId." + str(i)] = snapshot_id
-			i+=1
-
-    if not max_results == "" :
-    	params['MaxResults'] = max_results
-
-    if not next_token == "" :
-    	params['NextToken'] = next_token
-
-   	params['Detail'] = str(detail)
-
-    return requestify.make_request(url, verb, headers, params)
-
-
+class BlockDeviceMapping():
+	def __init__(self,device_name, delete_on_termination, volume_size):
+		self.device_name = device_name
+		self.delete_on_termination = delete_on_termination
+		self.volume_size = volume_size
