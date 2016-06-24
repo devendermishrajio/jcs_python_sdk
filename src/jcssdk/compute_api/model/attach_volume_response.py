@@ -18,21 +18,29 @@
 # WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
-#
 
-import argparse
-from jcssdk import utils
-from jcssdk import requestify
+from xml.sax import ContentHandler
+class attach_volume_response(ContentHandler):
+	def __init__(self):
+		self.CurrentData = ""
+		self.device_name = ""
+		self.instance_id = ""
+		self.delete_on_termination = ""
+		self.volume_id = ""
+		self.status = ""
 
-def describe_images(url, verb, headers, version, image_ids):
-	params = {}
-	params['Action'] = 'DescribeImages'
-	params['Version'] = version
-	i=0
-	if args.get_image_ids() != None:
-		for image_id in args.get_image_ids():
-			params['ImageId.'+str(i)] = image_id
-			i = i+1;	
-	
-	return requestify.make_request(url, verb, headers, params)
-	    
+	def startElement(self, tag, attributes):
+		self.CurrentData = tag
+
+	def characters(self, content):
+		if self.CurrentData == "deviceName":
+			self.device_name = content
+		elif self.CurrentData == "instanceId":
+			self.instance_id = content
+		elif self.CurrentData == "deleteOnTermination":
+			self.delete_on_termination = bool(content)
+		elif self.CurrentData == "volumeId":
+			self.volume_id = content
+		elif self.CurrentData == "status":
+			self.status = content
+		self.CurrentData = ""

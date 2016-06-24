@@ -18,21 +18,23 @@
 # WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
-#
 
-import argparse
-from jcssdk import utils
-from jcssdk import requestify
+from xml.sax import ContentHandler
+class CreateKeyPairResponse(ContentHandler):
+	def __init__(self):
+		self.CurrentData = ""
+		self.key_name = ""
+		self.key_fingerprint = ""
+		self.key_material = ""
 
-def describe_images(url, verb, headers, version, image_ids):
-	params = {}
-	params['Action'] = 'DescribeImages'
-	params['Version'] = version
-	i=0
-	if args.get_image_ids() != None:
-		for image_id in args.get_image_ids():
-			params['ImageId.'+str(i)] = image_id
-			i = i+1;	
-	
-	return requestify.make_request(url, verb, headers, params)
-	    
+	def startElement(self, tag, attributes):
+		self.CurrentData = tag
+
+	def characters(self, content):
+		if self.CurrentData == "keyFingerprint":
+			self.key_fingerprint = content
+		elif self.CurrentData == "instanceId":
+			self.key_name = content
+		elif self.CurrentData == "keyMaterial":
+			self.key_material = content
+		self.CurrentData = ""
