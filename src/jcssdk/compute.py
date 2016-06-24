@@ -17,17 +17,16 @@
 # SHALL THE AUTHOR BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 # WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-# IN THE SOFTWARE.
-#
 
 import config
-from compute_api import image
+from jcssdk.compute_api import image
 from jcssdk.compute_api import key_pair
 from jcssdk.compute_api import instance
 from jcssdk.compute_api import volume
 from jcssdk.compute_api import snapshot
-from jcssdk.compute_api.model import describe_images_response
-from jcssdk import parser
+from jcssdk.compute_api.model import DescribeInstancesResponse
+from xml.sax import parseString
+
 class Controller(object):
     """Compute Controller class
 
@@ -46,7 +45,7 @@ class Controller(object):
         self.version = '2016-03-01'
         self.verb = 'GET'
 
-    def describe_images(self, args):
+    def describe_images(self, image_ids = None):
         """
         Gives a detailed list of all images visible in
         the account
@@ -57,14 +56,16 @@ class Controller(object):
         specific images to describe
         """
         response = image.describe_images(self.url, self.verb, self.headers,
-                                     self.version, args).text
-        res = describe_images_response.describe_images_response()
-        parser.parse(res, str(response))
-        print res.images[0].name
+                                     self.version, image_ids)
+        if response is not None :
+            res = DescribeImagesResponse.DescribeImagesResponse()
+            parseString(str(response.text), res)
+            return res
+        else :
+            return None
 
 
-
-    def create_key_pair(self, args):
+    def create_key_pair(self, key_name):
         """
         Create a key pair to be used during instance
         creation
@@ -74,10 +75,16 @@ class Controller(object):
         The function expects a key-name as necessary
         input
         """
-        return key_pair.create_key_pair(self.url, self.verb, self.headers,
-                                        self.version, args)
+        response = key_pair.create_key_pair(self.url, self.verb, self.headers,
+                                        self.version, key_name)
+        if response is not None :
+            res = CreateKeyPairResponse.CreateKeyPairResponse()
+            parseString(str(response.text), res)
+            return res
+        else :
+            return None
  
-    def delete_key_pair(self, args):
+    def delete_key_pair(self, key_name):
         """
         Delete a key pair from your account
 
@@ -86,10 +93,16 @@ class Controller(object):
         The function expects a key-name as necessary
         input
         """
-        return key_pair.delete_key_pair(self.url, self.verb, self.headers,
-                                        self.version, args)
- 
-    def describe_key_pairs(self, args):
+        response = key_pair.delete_key_pair(self.url, self.verb, self.headers,
+                                        self.version, key_name)
+        if response is not None :
+            res = DeleteKeyPairResponse.DeleteKeyPairResponse()
+            parseString(str(response.text), res)
+            return res
+        else :
+            return None
+
+    def describe_key_pairs(self):
         """
         Describes all key pair in your account
 
@@ -97,10 +110,16 @@ class Controller(object):
 
         The function expects no arguments
         """
-        return key_pair.describe_key_pairs(self.url, self.verb,
-                                           self.headers, self.version, args)
- 
-    def import_key_pair(self, args):
+        response = key_pair.describe_key_pairs(self.url, self.verb,
+                                           self.headers, self.version)
+        if response is not None :
+            res = DescribeKeyPairsResponse.DescribeKeyPairsResponse()
+            parseString(str(response.text), res)
+            return res
+        else :
+            return None
+
+    def import_key_pair(self, key_name, public_key_material):
         """
         Import the public key from an RSA keypair that was
         created using a third-party application
@@ -111,10 +130,16 @@ class Controller(object):
         1. Unique name of Key Pair to import
         2. Public Key Material in base64 encoded form
         """
-        return key_pair.import_key_pair(self.url, self.verb, self.headers,
-                                        self.version, args)
- 
-    def describe_instances(self, args):
+        response = key_pair.import_key_pair(self.url, self.verb, self.headers,
+                                        self.version, key_name, public_key_material)
+        if response is not None :
+            res = ImportKeyPairsResponse.ImportKeyPairsResponse()
+            parseString(str(response.text), res)
+            return res
+        else :
+            return None
+
+    def describe_instances(self, instance_ids = None):
         """
         Describes instances in your account
 
@@ -126,10 +151,16 @@ class Controller(object):
         3. List of filters from which instances would
            be selected.
         """
-        return instance.describe_instances(self.url, self.verb,
-                                           self.headers, self.version, args)
- 
-    def stop_instances(self, args):
+        response = instance.describe_instances(self.url, self.verb,
+                                           self.headers, self.version, instance_ids)
+        if response is not None :
+            res = DescribeInstancesResponse.DescribeInstancesResponse()
+            parseString(str(response.text), res)
+            return res
+        else :
+            return None
+
+    def stop_instances(self, instance_ids):
         """
         Stop instances in your account
 
@@ -138,10 +169,16 @@ class Controller(object):
         The function expects one or more instances to
         be stopped.
         """
-        return instance.stop_instances(self.url, self.verb,
-                                       self.headers, self.version, args)
- 
-    def start_instances(self, args):
+        response = instance.stop_instances(self.url, self.verb,
+                                       self.headers, self.version, instance_ids)
+        if response is not None :
+            res = StopInstancesResponse.StopInstancesResponse()
+            parseString(str(response.text), res)
+            return res
+        else :
+            return None
+
+    def start_instances(self, instance_ids):
         """
         Start instances in your account
 
@@ -150,10 +187,16 @@ class Controller(object):
         The function expects one or more instances to
         be started.
         """
-        return instance.start_instances(self.url, self.verb,
-                                        self.headers, self.version, args)
- 
-    def reboot_instances(self, args):
+        response = instance.start_instances(self.url, self.verb,
+                                        self.headers, self.version, instance_ids)
+        if response is not None :
+            res = StartInstancesResponse.StartInstancesResponse()
+            parseString(str(response.text), res)
+            return res
+        else :
+            return None
+
+    def reboot_instances(self, instance_ids):
         """
         Reboot instances in your account
 
@@ -162,10 +205,16 @@ class Controller(object):
         The function expects one or more instances to
         be rebooted.
         """
-        return instance.reboot_instances(self.url, self.verb,
-                                         self.headers, self.version, args)
+        response = instance.reboot_instances(self.url, self.verb,
+                                         self.headers, self.version, instance_ids)
+        if response is not None :
+            res = RebootInstancesResponse.RebootInstancesResponse()
+            parseString(str(response.text), res)
+            return res
+        else :
+            return None
 
-    def terminate_instances(self, args):
+    def terminate_instances(self, instance_ids):
         """
         Terminate instances in your account
 
@@ -174,10 +223,16 @@ class Controller(object):
         The function expects one or more instances to
         be terminated.
         """
-        return instance.terminate_instances(self.url, self.verb,
+        response = instance.terminate_instances(self.url, self.verb,
                                             self.headers, self.version,
                                             args)
- 
+        if response is not None :
+            res = TerminateInstancesResponse.TerminateInstancesResponse()
+            parseString(str(response.text), res)
+            return res
+        else :
+            return None
+
     def get_password_data(self, args):
         """
         Get password for instance in your account. You 
@@ -191,11 +246,17 @@ class Controller(object):
         2. Private key file path (Optional)
         3. Passphrase (incase one is set for the key file)
         """
-        return instance.get_password_data(self.url, self.verb,
+        response = instance.get_password_data(self.url, self.verb,
                                           self.headers, self.version,
                                           args)
- 
-    def describe_instance_types(self, args):
+        if response is not None :
+            res = GetPasswordDataResponse.GetPasswordDataResponse()
+            parseString(str(response.text), res)
+            return res
+        else :
+            return None
+
+    def describe_instance_types(self, instance_type_ids = None):
         """
         Gives a description of instance types present.
 
@@ -204,11 +265,18 @@ class Controller(object):
         The function expects either no input or a list of 
         specific instance types to describe
         """
-        return instance.describe_instance_types(self.url, self.verb,
+        response = instance.describe_instance_types(self.url, self.verb,
                                                 self.headers,
-                                                self.version, args)
+                                                self.version, instance_type_id)
+        if response is not None :
+            res = DescribeInstanceTypesResponse.DescribeInstanceTypesResponse()
+            parseString(str(response.text), res)
+            return res
+        else :
+            return None
 
-    def run_instances(self, args):
+    def run_instances(self, image_id, instance_type_id, blocks = None, instance_count = -1, subnet_id = "", 
+    private_ip_address = "", security_group_ids = None, key_name = ""):
         """
         Launch specified number of instances in your
         account.
@@ -225,10 +293,16 @@ class Controller(object):
         7. private ip address (optional)
         8. block device mapping (optional)
         """
-        return instance.run_instances(self.url, self.verb, self.headers,
-                                      self.version, args)
+        response = instance.run_instances(self.url, self.verb, self.headers,
+                                      self.version, image_id, instance_type_id, blocks, instance_count, subnet_id, private_ip_address, security_group_ids, key_name)
+        if response is not None :
+            res = RunInstancesResponse.RunInstancesResponse()
+            parseString(str(response.text), res)
+            return res
+        else :
+            return None
 
-    def attach_volume(self, args):
+    def attach_volume(self, instance_id, volume_id, device):
         """
         Attach volume to given instance using particular device name
         to be used by the instance.
@@ -240,10 +314,16 @@ class Controller(object):
         2. Volume Id
         3. Device name
         """
-        return volume.attach_volume(self.url, self.verb, self.headers,
-                                    self.version, args)
+        response = volume.attach_volume(self.url, self.verb, self.headers,
+                                    self.version, instance_id, volume_id, device)
+        if response is not None :
+            res = AttachVolumeResponse.AttachVolumeResponse()
+            parseString(str(response.text), res)
+            return res
+        else :
+            return None
 
-    def detach_volume(self, args):
+    def detach_volume(self, volume_id, instance_id = ""):
         """
         Detach volume from given instance.
 
@@ -254,10 +334,16 @@ class Controller(object):
         2. Instance Id (optional)
         3. Force (optional)
         """
-        return volume.detach_volume(self.url, self.verb, self.headers,
-                                    self.version, args)
+        response = volume.detach_volume(self.url, self.verb, self.headers,
+                                    self.version, volume_id, instance_id)
+        if response is not None :
+            res = DetachVolumeResponse.DetachVolumeResponse()
+            parseString(str(response.text), res)
+            return res
+        else :
+            return None
 
-    def show_delete_on_termination_flag(self, args):
+    def show_delete_on_termination_flag(self, volume_id):
         """
         View the status of the DeleteOnTermination property for a volume
         that is attached to an instance.
@@ -266,11 +352,17 @@ class Controller(object):
 
         The functions expects the Volume Id in arguments
         """
-        return volume.show_delete_on_termination_flag(self.url,
+        response = volume.show_delete_on_termination_flag(self.url,
                                        self.verb, self.headers,
-                                       self.version, args)
+                                       self.version, volume_id)
+        if response is not None :
+            res = ShowDeleteOnTerminationFlagResponse.ShowDeleteOnTerminationFlagResponse()
+            parseString(str(response.text), res)
+            return res
+        else :
+            return None
 
-    def update_delete_on_termination_flag(self, args):
+    def update_delete_on_termination_flag(self, volume_id, delete_on_termination):
         """
         Update the status of the DeleteOnTermination property for a
         volume that is attached to an instance.
@@ -281,11 +373,17 @@ class Controller(object):
         1. Volume Id
         2. Delete on termination flag as bool
         """
-        return volume.update_delete_on_termination_flag(self.url,
+        response = volume.update_delete_on_termination_flag(self.url,
                                          self.verb, self.headers,
-                                         self.version, args)
+                                         self.version, volume_id, delete_on_termination)
+        if response is not None :
+            res = UpdateDeleteOnTerminationFlagResponse.UpdateDeleteOnTerminationFlagResponse()
+            parseString(str(response.text), res)
+            return res
+        else :
+            return None
 
-    def create_volume(self, args):
+    def create_volume(self, snapshot_id = "", size = -1):
         """
         Create a new volume which can be attached to an instance.
         This volume can be created empty or from an existing 
@@ -297,11 +395,17 @@ class Controller(object):
         1. Size as integer (for empty volume)
         2. Snapshot Id
         """
-        return volume.create_volume(self.url, self.verb,
+        response = volume.create_volume(self.url, self.verb,
                                     self.headers, self.version,
-                                    args)
+                                    snapshot_id, size)
+        if response is not None :
+            res = CreateVolumeResponse.CreateVolumeResponse()
+            parseString(str(response.text), res)
+            return res
+        else :
+            return None
 
-    def delete_volume(self, args):
+    def delete_volume(self, volume_id):
         """
         Delete an existing and available volume. The volume
         should be in 'available' state to delete.
@@ -310,11 +414,17 @@ class Controller(object):
 
         The function expects volume id to be deleted
         """
-        return volume.delete_volume(self.url, self.verb,
+        response = volume.delete_volume(self.url, self.verb,
                                     self.headers, self.version,
-                                    args)
+                                    volume_id)
+        if response is not None :
+            res = DeleteVolumeResponse.DeleteVolumeResponse()
+            parseString(str(response.text), res)
+            return res
+        else :
+            return None
 
-    def describe_volumes(self, args):
+    def describe_volumes(self, volume_ids = None, max_results = -1, next_token = "", detail = True):
         """
         Get a detailed list of volumes in your account
 
@@ -328,13 +438,16 @@ class Controller(object):
         4. Detail - by default this is true. Set to false to
            suppress detail
         """
-        return volume.describe_volumes(self.url, self.verb,
-                                    self.headers, self.version,
-                                    args)
+        response = volume.describe_volumes(self.url, self.verb, self.headers, self.version, 
+                                volume_ids, max_results, next_token, detail)
+        if response is not None :
+            res = DescribeVolumesResponse.DescribeVolumesResponse()
+            parseString(str(response.text), res)
+            return res
+        else :
+            return None
 
-
-
-    def create_snapshot(self, args):
+    def create_snapshot(self, volume_id):
         """
         Create a new snapshot from a existing volume.
 
@@ -343,11 +456,17 @@ class Controller(object):
         The function expects either of the following -
         Volume Id 
         """
-        return snapshot.create_snapshot(self.url, self.verb,
+        response = snapshot.create_snapshot(self.url, self.verb,
                                     self.headers, self.version,
-                                    args)
+                                    volume_id)
+        if response is not None :
+            res = CreateSnapshotResponse.CreateSnapshotResponse()
+            parseString(str(response.text), res)
+            return res
+        else :
+            return None
 
-    def delete_snapshot(self, args):
+    def delete_snapshot(self, snapshot_id):
         """
         Delete an existing and completed snapshot. The snapshot
         should be in 'completed' state to delete.
@@ -356,11 +475,17 @@ class Controller(object):
 
         The function expects snapshot id to be deleted
         """
-        return snapshot.delete_snapshot(self.url, self.verb,
+        response = snapshot.delete_snapshot(self.url, self.verb,
                                     self.headers, self.version,
-                                    args)
+                                    snapshot_id)
+        if response is not None :
+            res = DeleteSnapshotResponse.DeleteSnapshotResponse()
+            parseString(str(response.text), res)
+            return res
+        else :
+            return None
 
-    def describe_snapshots(self, args):
+    def describe_snapshots(self, snpashot_ids = None, max_results = -1, next_token = "", detail = True):
         """
         Get a detailed list of snapshots in your account
 
@@ -374,6 +499,11 @@ class Controller(object):
         4. Detail - by default this is true. Set to false to
            suppress detail
         """
-        return snapshot.describe_snapshots(self.url, self.verb,
-                                    self.headers, self.version,
-                                    args)
+        response = snapshot.describe_snapshots(self.url, self.verb, self.headers, self.version,
+                                    snpashot_ids, max_results, next_token, detail)
+        if response is not None :
+            res = DescribeSnapshotsResponse.DescribeSnapshotsResponse() 
+            parseString(str(response.text), res)
+            return res
+        else :
+            return None

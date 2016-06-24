@@ -25,7 +25,7 @@ import binascii
 import requests
 from jcssdk import utils
 from jcssdk import requestify
-from jcssdk.compute_api.model import BlockDeviceMapping
+# from jcssdk.compute_api.model import BlockDeviceMapping
 
 def describe_instances(url, verb, headers, version, instance_ids = None):
     params = {}
@@ -44,9 +44,9 @@ def start_instances(url, verb, headers, version, instance_ids):
     params['Action'] = 'StartInstances'
     params['Version'] = version
 
-    if not instance_ids == None:
+    if not instance_ids == None :
     	i=1
-	    for instance_id in instance_ids:
+        for instance_id in instance_ids:
 	        params['InsatnceId.' + str(i)] = instance_id
 	        i+=1
     return requestify.make_request(url, verb, headers, params)
@@ -58,7 +58,7 @@ def stop_instances(url, verb, headers, version, instance_ids):
 
     if not instance_ids == None:
     	i=1
-	    for instance_id in instance_ids:
+        for instance_id in instance_ids:
 	        params['InsatnceId.' + str(i)] = instance_id
 	        i+=1
     return requestify.make_request(url, verb, headers, params)
@@ -69,7 +69,7 @@ def reboot_instances(url, verb, headers, version, instance_ids):
     params['Version'] = version
     if not instance_ids == None:
     	i=1
-	    for instance_id in instance_ids:
+        for instance_id in instance_ids:
 	        params['InsatnceId.' + str(i)] = instance_id
 	        i+=1
     return requestify.make_request(url, verb, headers, params)
@@ -80,7 +80,7 @@ def terminate_instances(url, verb, headers, version, instance_ids):
     params['Version'] = version
     if instance_ids != None:
     	i=1
-	    for instance_id in instance_ids:
+        for instance_id in instance_ids:
 	        params['InsatnceId.' + str(i)] = instance_id
 	        i+=1
     return requestify.make_request(url, verb, headers, params)
@@ -106,8 +106,8 @@ def run_instances(url, verb, headers, version, image_id, instance_type_id, block
     params['InstanceTypeId'] = instance_type_id
     if not blocks == None:
     	i=1
-    	for block in blocks :
-    		if not block = None :
+        for block in blocks :
+    		if not block == None :
     			params['BlockDeviceMapping.' + str(i) + '.DeviceName'] = block.device_name
     			params['BlockDeviceMapping.' + str(i) + '.DeleteOnTermiantion'] = str(block.delete_on_termination)
     			params['BlockDeviceMapping.' + str(i) + '.VolumeSize'] = str(block.volume_size)

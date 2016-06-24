@@ -20,55 +20,27 @@
 # IN THE SOFTWARE.
 
 from xml.sax import ContentHandler
-class describe_images_response(ContentHandler):
+class AttachVolumeResponse(ContentHandler):
 	def __init__(self):
 		self.CurrentData = ""
-		self.images = []
-		self.image = None
-	
+		self.device_name = ""
+		self.instance_id = ""
+		self.delete_on_termination = ""
+		self.volume_id = ""
+		self.status = ""
+
 	def startElement(self, tag, attributes):
 		self.CurrentData = tag
-		if tag == "item":
-			self.image = image()
-	
-	def endElement(self, tag):
-		if tag == "item":
-			self.images.append(self.image) 
 
 	def characters(self, content):
 		if self.CurrentData == "deviceName":
-			self.image.device_name = content
-		elif self.CurrentData == "delete_on_termination":
-			self.image.delete_on_termination = content
-		elif self.CurrentData == "volumeSize":
-			self.image.volume_size = content
-		elif self.CurrentData == "snapshotId":
-			self.image.snapshot_id = content
-		elif self.CurrentData == "name":
-			self.image.name = content
-		elif self.CurrentData == "isPublice":
-			self.image.is_public = bool(content)
-		elif self.CurrentData == "imageId":
-			self.image.image_id = content
-		elif self.CurrentData == "imageState":
-			self.image.image_state = content
-		elif self.CurrentData == "architecture":
-			self.image.architecture = content
-		elif self.CurrentData == "imageType":
-			self.image.image_type = content
+			self.device_name = content
+		elif self.CurrentData == "instanceId":
+			self.instance_id = content
+		elif self.CurrentData == "deleteOnTermination":
+			self.delete_on_termination = bool(content)
+		elif self.CurrentData == "volumeId":
+			self.volume_id = content
+		elif self.CurrentData == "status":
+			self.status = content
 		self.CurrentData = ""
-
-
-
-class image:
-	def __init__(self):
-		self.device_name = ""
-		self.delete_on_termination = ""
-		self.volume_size = 0.0
-		self.snapshot_id = ""
-		self.name = ""
-		self.is_public = 0;
-		self.image_id = ""
-		self.image_state = "" 
-		self.architecture = ""
-		self.image_type = ""

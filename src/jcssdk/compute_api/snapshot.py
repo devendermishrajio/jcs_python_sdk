@@ -43,10 +43,10 @@ def describe_snapshots(url, verb, headers, version, snpashot_ids = None, max_res
     params['Version'] = version
 
     if not snpashot_ids == None :
-    	i=1
-    	for snapshot_id in snpashot_ids :
-    		params["SnapshotId." + str(i)] = snapshot_id
-			i+=1
+        i=1
+        for snapshot_id in snpashot_ids :
+            params["SnapshotId." + str(i)] = snapshot_id
+            i+=1
 
     if not max_results == "" :
     	params['MaxResults'] = max_results

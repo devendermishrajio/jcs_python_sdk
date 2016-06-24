@@ -61,6 +61,9 @@ def make_request(url, verb, headers, params, path=None, data=None):
     global common_headers
     headers.update(common_headers)
     print request_string
-    return requests.request(verb, request_string, data=data, 
+
+    conn = requests.request(verb, request_string, data=data, 
                             verify=config.check_secure(),
                             headers=headers)
+    # print conn.getcode()
+    return conn 

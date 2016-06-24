@@ -34,21 +34,21 @@ class DescribeInstancesResponse(ContentHandler):
 	def startElement(self, tag, attributes):
 		self.CurrentData = tag
 		if tag == "blockDeviceMapping":
-			insideB = True
+			self.insideB = True
 		elif tag == "GroupSet":
-			insideG = True
-		elif insideB and tag == "item":
+			self.insideG = True
+		elif self.insideB and tag == "item":
 			self.block_device = BlockDevice()
-		elif insideG and tag == "item":
+		elif self.insideG and tag == "item":
 			self.group = Group()
 		elif tag == "item":
 			self.instance = instance()
 
 
 	def endElement(self, tag):
-		if insideB and tag == "item":
+		if self.insideB and tag == "item":
 			self.instance.block_device_mapping.append(self.block_device)
-		elif insideG and tag == "item":
+		elif self.insideG and tag == "item":
 			self.instance.Groupset.append(self.group)
 		elif tag == "blockDeviceMapping":
 			self.insideB = False

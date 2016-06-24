@@ -81,10 +81,10 @@ def describe_volumes(url, verb, headers, version, volume_ids = None, max_results
     params['Version'] = version
 
     if not volume_ids == None :
-    	i=1
-    	for volume_id in volume_ids :
-    		params["VolumeId." + str(i)] = volume_id
-			i+=1
+        i=1
+        for volume_id in volume_ids :
+            params["VolumeId." + str(i)] = volume_id
+            i+=1
 
     if not max_results == "" :
     	params['MaxResults'] = max_results
