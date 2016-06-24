@@ -24,40 +24,38 @@ from jcssdk import utils
 from jcssdk import requestify
 
 
-def create_snapshot(url, verb, headers, version, args):
+def create_snapshot(url, verb, headers, version, volume_id):
     params = {}
-    params['Action'] = utils.dash_to_camelcase(args[0])
+    params['Action'] = 'CreateSnapshot'
     params['Version'] = version
-    args = args[1:]
-    parser = utils.get_argument_parser()
-    parser.add_argument('--volume-id', required=True)
-    parser.add_argument('--size',type=int, required=False)
-    args = parser.parse_args(args)
-    utils.populate_params_from_cli_args(params, args)
+    params['VolumeId'] = volume_id
+
+def delete_snapshot(url, verb, headers, version, snapshot_id):
+    params = {}
+    params['Action'] = 'DeleteSnapshot'
+    params['Version'] = version
+    params['SnapshotId'] = snapshot_id
     return requestify.make_request(url, verb, headers, params)
 
-def delete_snapshot(url, verb, headers, version, args):
+def describe_snapshots(url, verb, headers, version, snpashot_ids = None, max_results = -1, next_token = "", detail = True):
     params = {}
-    params['Action'] = utils.dash_to_camelcase(args[0])
+    params['Action'] = 'DescribeSnapshots'
     params['Version'] = version
-    args = args[1:]
-    parser = utils.get_argument_parser()
-    parser.add_argument('--snapshot-id', required=True)
-    args = parser.parse_args(args)
-    utils.populate_params_from_cli_args(params, args)
+
+    if not snpashot_ids == None :
+    	i=0
+    	for snapshot_id in snpashot_ids :
+    		params["SnapshotId." + str(i)] = snapshot_id
+			i+=1
+
+    if not max_results == "" :
+    	params['MaxResults'] = max_results
+
+    if not next_token == "" :
+    	params['NextToken'] = next_token
+
+   	params['Detail'] = str(detail)
+
     return requestify.make_request(url, verb, headers, params)
 
-def describe_snapshots(url, verb, headers, version, args):
-    params = {}
-    params['Action'] = utils.dash_to_camelcase(args[0])
-    params['Version'] = version
-    args = args[1:]
-    parser = utils.get_argument_parser()
-    parser.add_argument('--snapshot-ids', nargs='+', required=False)
-    parser.add_argument('--max-results', type=int, required=False)
-    parser.add_argument('--next-token', required=False)
-    parser.add_argument('--detail', type=bool, required=False)
-    args = parser.parse_args(args)
-    utils.populate_params_from_cli_args(params, args)
-    return requestify.make_request(url, verb, headers, params)
 

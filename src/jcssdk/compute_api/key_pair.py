@@ -24,47 +24,31 @@ import argparse
 from jcssdk import utils
 from jcssdk import requestify
 
-def create_key_pair(url, verb, headers, version, args):
+def create_key_pair(url, verb, headers, version, key_name ):
     params = {}
-    params['Action'] = utils.dash_to_camelcase(args[0])                    
+    params['Action'] = 'CreateKeyPair'                    
     params['Version'] = version
-    args = args[1:]
-    parser = utils.get_argument_parser()
-    parser.add_argument('--key-name', required=True)
-    args = parser.parse_args(args)
-    utils.populate_params_from_cli_args(params, args)
+    params['KeyName'] = key_name
     return requestify.make_request(url, verb, headers, params) 
 
-def delete_key_pair(url, verb, headers, version, args):
+def delete_key_pair(url, verb, headers, version, key_name):
     params = {}
-    params['Action'] = utils.dash_to_camelcase(args[0])                    
+    params['Action'] = 'DeleteKeyPair'                    
     params['Version'] = version
-    args = args[1:]
-    parser = utils.get_argument_parser()
-    parser.add_argument('--key-name', required=True)
-    args= parser.parse_args(args)
-    utils.populate_params_from_cli_args(params, args)
-    return requestify.make_request(url, verb, headers, params) 
-
-def describe_key_pairs(url, verb, headers, version, args):
-    params = {}
-    params['Action'] = utils.dash_to_camelcase(args[0])                    
-    params['Version'] = version
-    args = args[1:]
-    if len(args):
-        msg = "Unexpected input received. Please check help for valid arguments."
-        raise KeyError(msg)
+    params['KeyName'] = key_name
     return requestify.make_request(url, verb, headers, params)
 
-def import_key_pair(url, verb, headers, version, args): 
+def describe_key_pairs(url, verb, headers, version):
     params = {}
-    params['Action'] = utils.dash_to_camelcase(args[0])                    
+    params['Action'] = 'DescribeKeyPairs'                    
     params['Version'] = version
-    args = args[1:]
-    parser = utils.get_argument_parser()
-    parser.add_argument('--key-name', required=True)
-    parser.add_argument('--public-key-material', required=True)
-    args= parser.parse_args(args)
-    utils.populate_params_from_cli_args(params, args)
+    return requestify.make_request(url, verb, headers, params)
+
+def import_key_pair(url, verb, headers, version, key_name, public_key_material): 
+    params = {}
+    params['Action'] = 'ImportKeyPair'                    
+    params['Version'] = version
+    params['KeyName'] = key_name
+    params['PublicKeyMaterial'] = public_key_material
     return requestify.make_request(url, verb, headers, params) 
 

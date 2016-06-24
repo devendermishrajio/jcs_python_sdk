@@ -26,73 +26,68 @@ import requests
 from jcssdk import utils
 from jcssdk import requestify
 
-def describe_instances(url, verb, headers, version, args):
+def describe_instances(url, verb, headers, version, instance_ids = None):
     params = {}
-    params['Action'] = utils.dash_to_camelcase(args[0])
+    params['Action'] = 'DescribeInstances'
     params['Version'] = version
-    args = args[1:]
-    parser = utils.get_argument_parser()
-    parser.add_argument('--instance-ids', nargs='+', required=False)
-    # Right now filters functionality is broken, it works only
-    # for cases like --filters "Name=abc,Values=def"
-    parser.add_argument('--filters', nargs='+', required=False)
-    args = parser.parse_args(args)
-    utils.populate_params_from_cli_args(params, args)
+    i=0
+
+    if instance_ids != None:
+        for instance_id in instance_ids:
+            params['InsatnceId.' + str(i)] = instance_id
+            i+=1
     return requestify.make_request(url, verb, headers, params)
 
-def start_instances(url, verb, headers, version, args):
+def start_instances(url, verb, headers, version, instance_ids):
     params = {}
-    params['Action'] = utils.dash_to_camelcase(args[0])
+    params['Action'] = 'StartInstances'
     params['Version'] = version
-    args = args[1:]
-    parser = utils.get_argument_parser()
-    parser.add_argument('--instance-ids', nargs='+', required=True)
-    args = parser.parse_args(args)
-    utils.populate_params_from_cli_args(params, args)
+    i=0
+    for instance_id in instance_ids:
+        params['InsatnceId.' + str(i)] = instance_id
+        i+=1
     return requestify.make_request(url, verb, headers, params)
 
-def stop_instances(url, verb, headers, version, args):
+def stop_instances(url, verb, headers, version, instance_ids):
     params = {}
-    params['Action'] = utils.dash_to_camelcase(args[0])
+    params['Action'] = 'StopInstances'
     params['Version'] = version
-    args = args[1:]
-    parser = utils.get_argument_parser()
-    parser.add_argument('--instance-ids', nargs='+', required=True)
-    args = parser.parse_args(args)
-    utils.populate_params_from_cli_args(params, args)
+    i=0
+    for instance_id in instance_ids:
+        params['InsatnceId.' + str(i)] = instance_id
+        i+=1
     return requestify.make_request(url, verb, headers, params)
 
-def reboot_instances(url, verb, headers, version, args):
+def reboot_instances(url, verb, headers, version, instance_ids):
     params = {}
-    params['Action'] = utils.dash_to_camelcase(args[0])
+    params['Action'] = 'RebootInstances'
     params['Version'] = version
-    args = args[1:]
-    parser = utils.get_argument_parser()
-    parser.add_argument('--instance-ids', nargs='+', required=True)
-    args = parser.parse_args(args)
-    utils.populate_params_from_cli_args(params, args)
+    i=0
+    for instance_id in instance_ids:
+        params['InsatnceId.' + str(i)] = instance_id
+        i+=1
+    return requestify.make_request(url, verb, headers, params)
+ 
+def terminate_instances(url, verb, headers, version, instance_ids):
+    params = {}
+    params['Action'] = 'TerminateInstances'
+    params['Version'] = version
+    i=0
+    for instance_id in instance_ids:
+        params['InsatnceId.' + str(i)] = instance_id
+        i+=1
     return requestify.make_request(url, verb, headers, params)
 
-def terminate_instances(url, verb, headers, version, args):
+def describe_instance_types(url, verb, headers, version, instance_type_ids = None):
     params = {}
-    params['Action'] = utils.dash_to_camelcase(args[0])
+    params['Action'] = 'DescribeInstanceTypes'
     params['Version'] = version
-    args = args[1:]
-    parser = utils.get_argument_parser()
-    parser.add_argument('--instance-ids', nargs='+', required=True)
-    args = parser.parse_args(args)
-    utils.populate_params_from_cli_args(params, args)
-    return requestify.make_request(url, verb, headers, params)
+    i=0
 
-def describe_instance_types(url, verb, headers, version, args):
-    params = {}
-    params['Action'] = utils.dash_to_camelcase(args[0])
-    params['Version'] = version
-    args = args[1:]
-    parser = utils.get_argument_parser()
-    parser.add_argument('--instance-type-ids', nargs='+', required=False)
-    args = parser.parse_args(args)
-    utils.populate_params_from_cli_args(params, args)
+    if instance_type_ids != None:
+        for instance_type_id in instance_type_ids:
+            params['InsatnceTypeId.' + str(i)] = instance_type_id
+            i+=1
     return requestify.make_request(url, verb, headers, params)
 
 def run_instances(url, verb, headers, version, args):

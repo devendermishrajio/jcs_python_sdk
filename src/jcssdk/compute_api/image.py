@@ -24,12 +24,12 @@ import argparse
 from jcssdk import utils
 from jcssdk import requestify
 
-def describe_images(url, verb, headers, version, args):
+def describe_images(url, verb, headers, version, image_ids):
 	params = {}
 	params['Action'] = 'DescribeImages'
 	params['Version'] = version
 	i=0
-	for image_id in args.get_image_ids():
+	for image_id in image_ids:
 		params['ImageId.'+str(i)] = image_id
 		i = i+1;	
 	print params

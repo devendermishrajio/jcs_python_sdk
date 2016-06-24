@@ -23,89 +23,76 @@
 from jcssdk import utils
 from jcssdk import requestify
 
-def attach_volume(url, verb, headers, version, args):
+def attach_volume(url, verb, headers, version, instance_id, volume_id, device):
     params = {}
-    params['Action'] = utils.dash_to_camelcase(args[0])
+    params['Action'] = 'AttachVolume'
     params['Version'] = version
-    args = args[1:]
-    parser = utils.get_argument_parser()
-    parser.add_argument('--instance-id', required=True)
-    parser.add_argument('--volume-id', required=True)
-    parser.add_argument('--device', required=True)
-    args = parser.parse_args(args)
-    utils.populate_params_from_cli_args(params, args)
+    params['InstanceId'] = instance_id
+    params['VolumeId'] = volume_id
+    params['Device'] = device
     return requestify.make_request(url, verb, headers, params)
 
-def detach_volume(url, verb, headers, version, args):
+def detach_volume(url, verb, headers, version, volume_id, instance_id = ""):
     params = {}
-    params['Action'] = utils.dash_to_camelcase(args[0])
+    params['Action'] = 'DetachVolume'
     params['Version'] = version
-    args = args[1:]
-    parser = utils.get_argument_parser()
-    parser.add_argument('--instance-id', required=False)
-    parser.add_argument('--volume-id', required=True)
-    parser.add_argument('--force', type=bool, required=False)
-    args = parser.parse_args(args)
-    utils.populate_params_from_cli_args(params, args)
+    params['VolumeId'] = volume_id
+    if not instance_id == "" :
+    	params['InstanceId'] = instance_id
     return requestify.make_request(url, verb, headers, params)
 
-def show_delete_on_termination_flag(url, verb, headers, version, args):
+def show_delete_on_termination_flag(url, verb, headers, version, volume_id):
     params = {}
-    params['Action'] = utils.dash_to_camelcase(args[0])
+    params['Action'] = 'ShowDeleteOnTerminationFlag'
     params['Version'] = version
-    args = args[1:]
-    parser = utils.get_argument_parser()
-    parser.add_argument('--volume-id', required=True)
-    args = parser.parse_args(args)
-    utils.populate_params_from_cli_args(params, args)
+    params['VolumeId'] = volume_id
     return requestify.make_request(url, verb, headers, params)
 
-def update_delete_on_termination_flag(url, verb, headers, version, args):
+def update_delete_on_termination_flag(url, verb, headers, version, volume_id, delete_on_termination):
     params = {}
-    params['Action'] = utils.dash_to_camelcase(args[0])
+    params['Action'] = 'UpdateDeleteOnTerminationFlag'
     params['Version'] = version
-    args = args[1:]
-    parser = utils.get_argument_parser()
-    parser.add_argument('--volume-id', required=True)
-    parser.add_argument('--delete-on-termination', type=bool, required=True)
-    args = parser.parse_args(args)
-    utils.populate_params_from_cli_args(params, args)
+    params['VolumeId'] = volume_id
+    params['DeleteOnTermination'] = str(delete_on_termination)
     return requestify.make_request(url, verb, headers, params)
 
-def create_volume(url, verb, headers, version, args):
+def create_volume(url, verb, headers, version, snapshot_id = "", size = -1):
     params = {}
-    params['Action'] = utils.dash_to_camelcase(args[0])
+    params['Action'] = 'CreateVolume'
     params['Version'] = version
-    args = args[1:]
-    parser = utils.get_argument_parser()
-    parser.add_argument('--size', type=int, required=False)
-    parser.add_argument('--snapshot-id', required=False)
-    args = parser.parse_args(args)
-    utils.populate_params_from_cli_args(params, args)
+    if not snapshot_id == "" :
+    	params['SnapshotId'] = snapshot_id
+
+    if not size == -1 : 
+    	params['Size'] = str(size)
+
     return requestify.make_request(url, verb, headers, params)
 
-def delete_volume(url, verb, headers, version, args):
+def delete_volume(url, verb, headers, version, volume_id):
     params = {}
-    params['Action'] = utils.dash_to_camelcase(args[0])
+    params['Action'] = 'DeleteVolume'
     params['Version'] = version
-    args = args[1:]
-    parser = utils.get_argument_parser()
-    parser.add_argument('--volume-id', required=True)
-    args = parser.parse_args(args)
-    utils.populate_params_from_cli_args(params, args)
+    params['VolumeId'] = volume_id
     return requestify.make_request(url, verb, headers, params)
 
-def describe_volumes(url, verb, headers, version, args):
+def describe_volumes(url, verb, headers, version, volume_ids = None, max_results = -1, next_token = "", detail = True):
     params = {}
-    params['Action'] = utils.dash_to_camelcase(args[0])
+    params['Action'] = 'DescrieVolumes'
     params['Version'] = version
-    args = args[1:]
-    parser = utils.get_argument_parser()
-    parser.add_argument('--volume-ids', nargs='+', required=False)
-    parser.add_argument('--max-results', type=int, required=False)
-    parser.add_argument('--next-token', required=False)
-    parser.add_argument('--detail', type=bool, required=False)
-    args = parser.parse_args(args)
-    utils.populate_params_from_cli_args(params, args)
+
+    if not volume_ids == None :
+    	i=0
+    	for volume_id in volume_ids :
+    		params["VolumeId." + str(i)] = volume_id
+			i+=1
+
+    if not max_results == "" :
+    	params['MaxResults'] = max_results
+
+    if not next_token == "" :
+    	params['NextToken'] = next_token
+
+   	params['Detail'] = str(detail)
+
     return requestify.make_request(url, verb, headers, params)
 
