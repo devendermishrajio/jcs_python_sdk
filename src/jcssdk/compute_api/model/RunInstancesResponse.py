@@ -20,7 +20,10 @@
 # IN THE SOFTWARE.
 
 from xml.sax import ContentHandler
-class describe_instances_response(ContentHandler):
+from DescribeInstancesResponse import Instance
+from DescribeInstancesResponse import Group
+from DescribeInstancesResponse import BlockDevice
+class RunInstancesResponse(ContentHandler):
 	def __init__(self):
 		self.CurrentData = ""
 		self.instances = []
@@ -38,9 +41,9 @@ class describe_instances_response(ContentHandler):
 		elif tag == "groupSet":
 			insideG = True
 		elif insideB and tag == "item":
-			self.block_device = block_device()
+			self.block_device = BlockDevice()
 		elif insideG and tag == "item":
-			self.group = group()
+			self.group = Group()
 		elif tag == "item":
 			self.instance = instance()
 
@@ -95,38 +98,3 @@ class describe_instances_response(ContentHandler):
 
 		self.CurrentData = ""
 
-
-
-
-
-
-
-
-
-class instance:
-	def __init__(self):
-		self.dns_name = ""
-		self.instance_id = ""
-		self.instance_state = ""
-		self.image_id = ""
-		self.private_dns_name = ""
-		self.key_name = ""
-		self.launch_time = ""
-		self.subnet_id = ""
-		self.vpc_id = ""
-		self.instance_type = ""
-		self.private_ip_address = ""
-		self.groupset = []
-		self.block_device_mapping = []
-
-class group:
-	def __init__(self):
-		self.group_name = ""
-		self.group_id = ""
-
-class block_device:
-	def __init__(self):
-		self.status = ""
-		self.device_name = ""
-		self.delete_on_termination = None
-		self.volume_id = ""
