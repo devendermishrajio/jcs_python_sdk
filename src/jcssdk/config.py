@@ -108,7 +108,7 @@ class ConfigHandler(object):
     """
     def __init__(self, args=None):
         self.endpoints = endpoints
-        self.secure = True
+        self.secure = False
         self.debug = False
         self.access_key = os.environ.get('ACCESS_KEY')
         self.secret_key = os.environ.get('SECRET_KEY')

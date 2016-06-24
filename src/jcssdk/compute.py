@@ -26,7 +26,8 @@ from jcssdk.compute_api import key_pair
 from jcssdk.compute_api import instance
 from jcssdk.compute_api import volume
 from jcssdk.compute_api import snapshot
-
+from jcssdk.compute_api.model import describe_images_response
+from jcssdk import parser
 class Controller(object):
     """Compute Controller class
 
@@ -55,8 +56,13 @@ class Controller(object):
         The function expects either no input or a list of 
         specific images to describe
         """
-        return image.describe_images(self.url, self.verb, self.headers,
-                                     self.version, args)
+        response = image.describe_images(self.url, self.verb, self.headers,
+                                     self.version, args).text
+        res = describe_images_response.describe_images_response()
+        parser.parse(res, str(response))
+        print res.images[0].name
+
+
 
     def create_key_pair(self, args):
         """

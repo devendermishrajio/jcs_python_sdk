@@ -60,7 +60,7 @@ def make_request(url, verb, headers, params, path=None, data=None):
     request_string = request_string[:-1]
     global common_headers
     headers.update(common_headers)
-    
+    print request_string
     return requests.request(verb, request_string, data=data, 
                             verify=config.check_secure(),
                             headers=headers)
