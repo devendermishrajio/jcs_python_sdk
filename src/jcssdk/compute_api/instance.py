@@ -139,4 +139,5 @@ def get_password_data(url, verb, headers, version, instance_id):
     params['Action'] = 'GetPasswordData'
     params['Version'] = version
     params['InstanceId'] = instance_id
-    response = requestify.make_request(url, verb, headers, params)
+    return requestify.make_request(url, verb, headers, params)
+    

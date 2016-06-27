@@ -20,7 +20,7 @@
 # IN THE SOFTWARE.
 
 from xml.sax import ContentHandler
-class CreateVolumeResponse(ContentHandler):
+class GetPasswordDataResponse(ContentHandler):
 	def __init__(self):
 		self.CurrentData = ""
 		self.instance_id = ""
@@ -35,6 +35,6 @@ class CreateVolumeResponse(ContentHandler):
 			self.instance_id = content
 		elif self.CurrentData == "passwordData":
 			self.password_data = content
-		elif self.CurrentData == "timeStamp":
+		elif self.CurrentData == "timestamp":
 			self.time_stamp = content
 		self.CurrentData = ""

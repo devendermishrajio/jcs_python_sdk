@@ -271,7 +271,7 @@ class Controller(object):
         """
         response = instance.get_password_data(self.url, self.verb,
                                           self.headers, self.version,
-                                          args)
+                                          instance_id)
         if response is not None :
             res = GetPasswordDataResponse.GetPasswordDataResponse()
             parseString(str(response.text), res)

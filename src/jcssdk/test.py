@@ -1,4 +1,5 @@
 import sys
+import os
 from jcssdk import compute
 
 compute_obj = compute.Controller()
@@ -129,7 +130,7 @@ while not i == -1:
 
 	# get_password_data
 	elif i == 22:
-		res = compute_obj.get_password_data()
+		res = compute_obj.get_password_data(instance_id = 'i-c85cf209' ,private_key_file = "key2.pem")
 		print res.password_data
 
 	i = input()
