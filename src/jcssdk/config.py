@@ -22,6 +22,7 @@
 
 import os
 from jcssdk import exception
+import myconfig
 """
   The following endpoints can be overridden using environment variable
   The environment variable should be in the form of SERVICE_URL, where
@@ -106,20 +107,45 @@ class ConfigHandler(object):
     2. Access/Secret Key values
     3. Processing general arguments given by user
     """
-    def __init__(self, args=None):
+    def __init__(self):
         self.endpoints = endpoints
-        self.secure = False
-        self.debug = False
-        self.access_key = os.environ.get('ACCESS_KEY')
-        self.secret_key = os.environ.get('SECRET_KEY')
+        self.secure = myconfig.secure
+        self.debug = myconfig.debug
+        self.access_key = myconfig.access_key
+        self.secret_key = myconfig.secret_key
         if not self.access_key or not self.secret_key:
             raise exception.UnknownCredentials()
-        if args:
-            self.process_cli_specific_args(args)
 
     def get_service_url(self, service):
-        service_url_env = service.upper() + "_URL"
-        url = os.environ.get(service_url_env, self.endpoints.get(service))
+        if service == 'compute':
+            if myconfig.compute_url == "":
+                url = self.endpoints.get(service)
+            else:
+                url = myconfig.compute_url
+
+        if service == 'iam':
+            if myconfig.compute_url == "":
+                url = self.endpoints.get(service)
+            else:
+                url = myconfig.iam_url
+
+        if service == 'rds':
+            if myconfig.compute_url == "":
+                url = self.endpoints.get(service)
+            else:
+                url = myconfig.rds_url
+
+        if service == 'dss':
+            if myconfig.compute_url == "":
+                url = self.endpoints.get(service)
+            else:
+                url = myconfig.dss_url
+
+        if service == 'vpc':
+            if myconfig.compute_url == "":
+                url = self.endpoints.get(service)
+            else:
+                url = myconfig.vpc_url
         return url
 
     def get_access_key(self):
@@ -133,18 +159,4 @@ class ConfigHandler(object):
 
     def check_debug(self):
         return self.debug
-
-    def process_cli_specific_args(self, args):
-        parser = argparse.ArgumentParser()
-        parser.add_argument('--debug', action='store_true')
-        parser.add_argument('--insecure', action='store_true')
-        processed_args, args_left = parser.parse_known_args(args)
-        processed_args = vars(processed_args)
-        del args[:]
-        for arg in args_left:
-            args.append(arg)
-        if processed_args.get('debug'):
-            self.debug = True
-        if processed_args.get('insecure') == True:
-            self.secure = False
 
