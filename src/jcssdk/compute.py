@@ -1,4 +1,4 @@
-# Copyright (c) 2016 Jiocloud.com, Inc. or its affiliates.  All Rights Reserved
+ # Copyright (c) 2016 Jiocloud.com, Inc. or its affiliates.  All Rights Reserved
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the
@@ -25,7 +25,28 @@ from jcssdk.compute_api import instance
 from jcssdk.compute_api import volume
 from jcssdk.compute_api import snapshot
 from jcssdk.compute_api.model import DescribeInstancesResponse
+from jcssdk.compute_api.model import DescribeInstanceTypesResponse
 from jcssdk.compute_api.model import DescribeImagesResponse
+from jcssdk.compute_api.model import DescribeVolumesResponse
+from jcssdk.compute_api.model import DescribeSnapshotsResponse
+from jcssdk.compute_api.model import DescribeKeyPairsResponse
+from jcssdk.compute_api.model import AttachVolumeResponse
+from jcssdk.compute_api.model import CreateKeyPairResponse
+from jcssdk.compute_api.model import CreateSnapshotResponse
+from jcssdk.compute_api.model import CreateVolumeResponse
+from jcssdk.compute_api.model import DeleteKeyPairResponse
+from jcssdk.compute_api.model import DeleteSnapshotResponse
+from jcssdk.compute_api.model import DeleteVolumeResponse
+from jcssdk.compute_api.model import DetachVolumeResponse
+from jcssdk.compute_api.model import GetPasswordDataResponse
+from jcssdk.compute_api.model import ImportKeyPairsResponse
+from jcssdk.compute_api.model import RebootInstancesResponse
+from jcssdk.compute_api.model import RunInstancesResponse
+from jcssdk.compute_api.model import ShowDeleteOnTerminationResponse
+from jcssdk.compute_api.model import UpdateDeleteOnTerminationResponse
+from jcssdk.compute_api.model import StopInstancesResponse
+from jcssdk.compute_api.model import StartInstancesResponse
+from jcssdk.compute_api.model import TerminateInstancesResponse
 from xml.sax import parseString
 
 class Controller(object):
@@ -268,7 +289,7 @@ class Controller(object):
         """
         response = instance.describe_instance_types(self.url, self.verb,
                                                 self.headers,
-                                                self.version, instance_type_id)
+                                                self.version, instance_type_ids)
         if response is not None :
             res = DescribeInstanceTypesResponse.DescribeInstanceTypesResponse()
             parseString(str(response.text), res)
@@ -460,6 +481,7 @@ class Controller(object):
         response = snapshot.create_snapshot(self.url, self.verb,
                                     self.headers, self.version,
                                     volume_id)
+        
         if response is not None :
             res = CreateSnapshotResponse.CreateSnapshotResponse()
             parseString(str(response.text), res)

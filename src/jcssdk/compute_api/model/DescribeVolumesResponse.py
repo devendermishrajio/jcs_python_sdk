@@ -20,7 +20,7 @@
 # IN THE SOFTWARE.
 
 from xml.sax import ContentHandler
-class DescribeInstancesResponse(ContentHandler):
+class DescribeVolumesResponse(ContentHandler):
 	def __init__(self):
 		self.CurrentData = ""
 		self.volumes = []
@@ -32,15 +32,15 @@ class DescribeInstancesResponse(ContentHandler):
 	def startElement(self, tag, attributes):
 		self.CurrentData = tag
 		if tag == "attachmentSet":
-			insideA = True
-		elif insideA and tag == "item":
+			self.insideA = True
+		elif self.insideA and tag == "item":
 			self.attachment = Attachment()
 		elif tag == "item":
 			self.volume = Volume()
 
 
 	def endElement(self, tag):
-		if insideA and tag == "item":
+		if self.insideA and tag == "item":
 			self.volume.attachment_set.append(self.attachment)
 		elif tag == "attachmentSet":
 			self.insideA = False

@@ -20,6 +20,7 @@
 # IN THE SOFTWARE.
 
 from xml.sax import ContentHandler
+from jcssdk.utils import str2bool
 class DeleteKeyPairResponse(ContentHandler):
 	def __init__(self):
 		self.CurrentData = ""
@@ -29,5 +30,5 @@ class DeleteKeyPairResponse(ContentHandler):
 		self.CurrentData = tag
 
 	def characters(self, content):
-		if self.CurrentData == "result":
-			self.result = (bool)content
+		if self.CurrentData == "return":
+			self.result = str2bool(content)

@@ -20,6 +20,7 @@
 # IN THE SOFTWARE.
 
 from xml.sax import ContentHandler
+from jcssdk.utils import str2bool
 class DeleteSnapshotResponse(ContentHandler):
 	def __init__(self):
 		self.CurrentData = ""
@@ -30,4 +31,4 @@ class DeleteSnapshotResponse(ContentHandler):
 
 	def characters(self, content):
 		if self.CurrentData == "return":
-			self.result = (bool)content
+			self.result = str2bool(content)

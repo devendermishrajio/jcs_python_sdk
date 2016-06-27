@@ -29,7 +29,8 @@ def create_snapshot(url, verb, headers, version, volume_id):
     params['Action'] = 'CreateSnapshot'
     params['Version'] = version
     params['VolumeId'] = volume_id
-
+    return requestify.make_request(url, verb, headers, params)
+    
 def delete_snapshot(url, verb, headers, version, snapshot_id):
     params = {}
     params['Action'] = 'DeleteSnapshot'
@@ -48,7 +49,7 @@ def describe_snapshots(url, verb, headers, version, snpashot_ids = None, max_res
             params["SnapshotId." + str(i)] = snapshot_id
             i+=1
 
-    if not max_results == "" :
+    if not max_results == -1 :
     	params['MaxResults'] = max_results
 
     if not next_token == "" :

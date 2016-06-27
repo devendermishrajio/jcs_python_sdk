@@ -23,7 +23,7 @@ from xml.sax import ContentHandler
 class DescribeKeyPairsResponse(ContentHandler):
 	def __init__(self):
 		self.CurrentData = ""
-		self.keypairs = []
+		self.key_pairs = []
 		self.key_pair = None
 		
 	def startElement(self, tag, attributes):

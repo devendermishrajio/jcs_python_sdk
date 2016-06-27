@@ -20,7 +20,7 @@
 # IN THE SOFTWARE.
 
 from xml.sax import ContentHandler
-class ImportKeyPairResponse(ContentHandler):
+class ImportKeyPairsResponse(ContentHandler):
 	def __init__(self):
 		self.CurrentData = ""
 		self.key_fingerprint = ""

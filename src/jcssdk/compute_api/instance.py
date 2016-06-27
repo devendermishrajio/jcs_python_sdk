@@ -35,7 +35,7 @@ def describe_instances(url, verb, headers, version, instance_ids = None):
     if not instance_ids == None:
     	i=1
         for instance_id in instance_ids:
-            params['InsatnceId.' + str(i)] = instance_id
+            params['InstanceId.' + str(i)] = instance_id
             i+=1
     return requestify.make_request(url, verb, headers, params)
 
@@ -47,7 +47,7 @@ def start_instances(url, verb, headers, version, instance_ids):
     if not instance_ids == None :
     	i=1
         for instance_id in instance_ids:
-	        params['InsatnceId.' + str(i)] = instance_id
+	        params['InstanceId.' + str(i)] = instance_id
 	        i+=1
     return requestify.make_request(url, verb, headers, params)
 
@@ -59,7 +59,7 @@ def stop_instances(url, verb, headers, version, instance_ids):
     if not instance_ids == None:
     	i=1
         for instance_id in instance_ids:
-	        params['InsatnceId.' + str(i)] = instance_id
+	        params['InstanceId.' + str(i)] = instance_id
 	        i+=1
     return requestify.make_request(url, verb, headers, params)
 
@@ -70,7 +70,7 @@ def reboot_instances(url, verb, headers, version, instance_ids):
     if not instance_ids == None:
     	i=1
         for instance_id in instance_ids:
-	        params['InsatnceId.' + str(i)] = instance_id
+	        params['InstanceId.' + str(i)] = instance_id
 	        i+=1
     return requestify.make_request(url, verb, headers, params)
  
@@ -81,7 +81,7 @@ def terminate_instances(url, verb, headers, version, instance_ids):
     if instance_ids != None:
     	i=1
         for instance_id in instance_ids:
-	        params['InsatnceId.' + str(i)] = instance_id
+	        params['InstanceId.' + str(i)] = instance_id
 	        i+=1
     return requestify.make_request(url, verb, headers, params)
 
@@ -93,7 +93,7 @@ def describe_instance_types(url, verb, headers, version, instance_type_ids = Non
     if not instance_type_ids == None:
         i=1
         for instance_type_id in instance_type_ids:
-            params['InsatnceTypeId.' + str(i)] = instance_type_id
+            params['InstanceTypeId.' + str(i)] = instance_type_id
             i+=1
     return requestify.make_request(url, verb, headers, params)
 

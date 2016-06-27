@@ -326,3 +326,6 @@ def requestid_in_response(response):
             if request_id:
                 return request_id
     return None
+
+def str2bool(content):
+    return content.lower() in ("yes", "true", "t", "1")

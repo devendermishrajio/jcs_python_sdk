@@ -66,4 +66,5 @@ def make_request(url, verb, headers, params, path=None, data=None):
                             verify=config.check_secure(),
                             headers=headers)
     # print conn.getcode()
+    print conn.text
     return conn 

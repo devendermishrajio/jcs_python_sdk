@@ -26,25 +26,14 @@ class DescribeSnapshotsResponse(ContentHandler):
 		self.snapshots= []
 		
 		self.snapshot = None
-		self.insideA = False
-		self.attachment = None
-
 	def startElement(self, tag, attributes):
 		self.CurrentData = tag
-		if tag == "attachmentSet":
-			insideA = True
-		elif insideA and tag == "item":
-			self.attachment = Attachment()
-		elif tag == "item":
+		if tag == "item":
 			self.snapshot = Snapshot()
 
 
 	def endElement(self, tag):
-		if insideA and tag == "item":
-			self.snapshot.attachment_set.append(self.attachment)
-		elif tag == "attachmentSet":
-			self.insideA = False
-		elif tag == "item":
+		if tag == "item":
 			self.snapshots.append(self.snapshot)
 
 	def characters(self, content):
@@ -54,29 +43,17 @@ class DescribeSnapshotsResponse(ContentHandler):
 			self.snapshot.volume_id = content
 		elif self.CurrentData == "volumeSize":
 			self.snapshot.size = float(content)
-		elif self.CurrentData == "createTime":
-			self.snapshot.create_time = content
-		elif self.CurrentData == "snapshot_id":
+		elif self.CurrentData == "startTime":
+			self.snapshot.start_time = content
+		elif self.CurrentData == "snapshotId":
 			self.snapshot.snapshot_id = content
-		elif self.CurrentData == "device":
-			self.attachment.device = content
-		elif self.CurrentData == "instanceId":
-			self.attachment.instance_id = content
-
 		self.CurrentData = ""
 
 
-class Volume:
+class Snapshot:
 	def __init__(self):
 		self.status = ""
 		self.volume_id = ""
 		self.size = None
-		self.create_time = ""
+		self.start_time = ""
 		self.snapshot_id = ""
-		self.attachment_set = []
-		
-
-class Attachment:
-	def __init__(self):
-		self.device = ""
-		self.instance_id = ""

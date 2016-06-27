@@ -24,29 +24,32 @@ while not i == -1:
 	# Describe instance types
 	elif i == 2:
 		res = compute_obj.describe_instance_types()
-		for instance_type_id in res.instance_type_ids:
+		for instance_type in res.instances:
+			print instance_type.vcpus
+			print instance_type.ram
 	# stop instances
 	elif i == 3:
-		res = compute_obj.stop_instances(instance_id = ['i-c85cf209'])
+		res = compute_obj.stop_instances(instance_ids = ['i-c85cf209'])
 		for instance in res.instances:
-			print instance.instance_id
+			print instance.current_state
+			print instance.previous_state
 	# start_instances
 	elif i == 4:
-		res = compute_obj.start_instances(instance_id = ['i-c85cf209'])
+		res = compute_obj.start_instances(instance_ids = ['i-c85cf209'])
 		for instance in res.instances:
-			print instance.instance_id
+			print instance.current_state
 
 	# reboot_instances
 	elif i == 5:
-		res = compute_obj.reboot_instances(instance_id = ['i-c85cf209'])
+		res = compute_obj.reboot_instances(instance_ids = ['i-c85cf209'])
 		for instance in res.instances:
-			print instance.instance_id
+			print instance.current_state
 
 	# terminate_instances
 	elif i == 6:
 		res = compute_obj.terminate_instances(instance_id = ['i-c85cf209'])
 		for instance in res.instances:
-			print instance.instance_id
+			print instance.current_state
 
 	# run_instances
 	elif i == 7:
@@ -57,91 +60,79 @@ while not i == -1:
 	# describe_key_pairs
 	elif i == 8:
 		res = compute_obj.describe_key_pairs()
-		for instance in res.instances:
-			print instance.instance_id
+		for key in res.key_pairs:
+			print key.key_fingerprint
 
 	# create_key_pair
 	elif i == 9:
 		res = compute_obj.create_key_pair(key_name = 'test_pyth')
-		for instance in res.instances:
-			print instance.instance_id
+		print res.key_fingerprint
 
 	# delete_key_pair
 	elif i == 10:
 		res = compute_obj.delete_key_pair(key_name = 'test_pyth')
-		for instance in res.instances:
-			print instance.instance_id
+		print res.result
 
 	# create_snapshot
 	elif i == 11:
 		res = compute_obj.create_snapshot(volume_id = '91d82f45-6f08-407e-a46a-3e8b9ddb78b0')
-		for instance in res.instances:
-			print instance.instance_id
+		if not res == None :
+			print res.snapshot_id
 
 	# delete_snapshot
 	elif i == 12:
 		res = compute_obj.delete_snapshot(snapshot_id = '8b54ebed-484a-41b4-88ba-067798342902')
-		for instance in res.instances:
-			print instance.instance_id
+		print res.result
 
 	# describe_snapshots
 	elif i == 13:
 		res = compute_obj.describe_snapshots()
-		for instance in res.instances:
-			print instance.instance_id
+		for snapshot in res.snapshots:
+			print snapshot.snapshot_id
 
 	# create_volume
 	elif i == 14:
 		res = compute_obj.create_volume(size = 13)
-		for instance in res.instances:
-			print instance.instance_id
+		print res.volume_id
 
 	# delete_volume
 	elif i == 15:
 		res = compute_obj.delete_volume(volume_id = '91d82f45-6f08-407e-a46a-3e8b9ddb78b0')
-		for instance in res.instances:
-			print instance.instance_id
+		print res.result
 
 	# attach_volume
 	elif i == 16:
 		res = compute_obj.attach_volume(volume_id = '91d82f45-6f08-407e-a46a-3e8b9ddb78b0', instance_id = 'i-c85cf209', device ='/dev/vdb')
-		for instance in res.instances:
-			print instance.instance_id
-
+		print res.volume_id
 	# detach_volume
 	elif i == 17:
 		res = compute_obj.detach_volume(volume_id = '91d82f45-6f08-407e-a46a-3e8b9ddb78b0')
-		for instance in res.instances:
-			print instance.instance_id
+		print res.volume_id
 
 	# describe_volumes
 	elif i == 18:
 		res = compute_obj.describe_volumes()
-		for instance in res.instances:
-			print instance.instance_id
+		for volume in res.volumes:
+			print volume.volume_id
 
 	# show_delete_on_termination_flag
 	elif i == 19:
 		res = compute_obj.show_delete_on_termination_flag(volume_id = '91d82f45-6f08-407e-a46a-3e8b9ddb78b0')
-		for instance in res.instances:
-			print instance.instance_id
+		print res.delete_on_termination
 
 	# update_delete_on_termination_flag
 	elif i == 20:
 		res = compute_obj.update_delete_on_termination_flag(volume_id = '91d82f45-6f08-407e-a46a-3e8b9ddb78b0', delete_on_termination = True)
-		for instance in res.instances:
-			print instance.instance_id
+		print res.delete_on_termination
 
 	# import_key_pair
 	elif i == 21:
 		res = compute_obj.import_key_pair()
-		for instance in res.instances:
-			print instance.instance_id
+		print res.key_material
 
 	# get_password_data
 	elif i == 22:
 		res = compute_obj.get_password_data()
-		for instance in res.instances:
-			print instance.instance_id
+		print res.password_data
 
 	i = input()

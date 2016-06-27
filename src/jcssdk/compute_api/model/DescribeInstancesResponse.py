@@ -52,7 +52,7 @@ class DescribeInstancesResponse(ContentHandler):
 			self.instance.Groupset.append(self.group)
 		elif tag == "blockDeviceMapping":
 			self.insideB = False
-		elif tag == "GroupSet":
+		elif tag == "groupSet":
 			self.insideG = False
 		elif tag == "item":
 			self.instances.append(self.instance)
@@ -82,9 +82,9 @@ class DescribeInstancesResponse(ContentHandler):
 			self.instance.launch_time = content
 		elif self.CurrentData == "subnetId":
 			self.instance.subnet_id = content
-		elif self.CurrentData == "GroupName":
+		elif self.CurrentData == "groupName":
 			self.group.group_name = content
-		elif self.CurrentData == "GroupId":
+		elif self.CurrentData == "groupId":
 			self.group.group_id = content
 		elif self.CurrentData == "vpcId":
 			self.instance.vpc_id = content
