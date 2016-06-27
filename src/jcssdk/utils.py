@@ -329,3 +329,12 @@ def requestid_in_response(response):
 
 def str2bool(content):
     return content.lower() in ("yes", "true", "t", "1")
+
+def decrypt_instance_password(password, private_key_file, passphrase):
+    key = import_ssh_key(private_key_file, passphrase)
+    encrypted_data = base64.b64decode(base64.b64decode(password))
+    ciphertext = int(binascii.hexlify(encrypted_data), 16)
+    plaintext = key.decrypt(ciphertext)
+    decrypted_data = long_to_bytes(plaintext)
+    unpadded_data = pkcs1_unpad(decrypted_data)
+    return unpadded_data 

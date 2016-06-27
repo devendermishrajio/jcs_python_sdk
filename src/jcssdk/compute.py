@@ -18,7 +18,8 @@
 # WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 
-import config
+from jcssdk import config
+from jcssdk import utils
 from jcssdk.compute_api import image
 from jcssdk.compute_api import key_pair
 from jcssdk.compute_api import instance
@@ -255,7 +256,7 @@ class Controller(object):
         else :
             return None
 
-    def get_password_data(self, args):
+    def get_password_data(self, instance_id, private_key_file = None, passphrase = None):
         """
         Get password for instance in your account. You 
         need to also provide the private key file to 
@@ -274,6 +275,8 @@ class Controller(object):
         if response is not None :
             res = GetPasswordDataResponse.GetPasswordDataResponse()
             parseString(str(response.text), res)
+            if not private_key_file == None :
+                res.password_data = utils.decrypt_instance_password(res.password_data, private_key_file, passphrase)
             return res
         else :
             return None

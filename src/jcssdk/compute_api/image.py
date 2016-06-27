@@ -21,9 +21,9 @@
 #
 
 import argparse
+import os
 from jcssdk import utils
 from jcssdk import requestify
-
 def describe_images(url, verb, headers, version, image_ids=None):
 	params = {}
 	params['Action'] = 'DescribeImages'

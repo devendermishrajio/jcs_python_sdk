@@ -2,11 +2,6 @@ import sys
 from jcssdk import compute
 
 compute_obj = compute.Controller()
-# function_caller={
-# 	"0" : compute_obj.describe_images(),
-# 	"1" : compute_obj.describe_instances(),
-# 	"2" : compute_obj.describe_instance_types()
-# }
 
 i = input()
 while not i == -1:
@@ -15,6 +10,8 @@ while not i == -1:
 	# Describe images
 	elif i == 0:
 		res = compute_obj.describe_images()
+		for image in res.images:
+			print image.image_id
 
 	# Describe instances
 	elif i == 1:

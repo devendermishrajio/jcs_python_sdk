@@ -20,23 +20,6 @@
 # IN THE SOFTWARE.
 #
 
-from jcssdk.help import ERROR_STRING
-
-class ServiceNotFound(ImportError):
-    """Exception raised when incorrect service keyword used"""
-    def __init__(self, service):
-        self.msg = ERROR_STRING
-        self.msg += ("%s service not found." % (service))
-        super(ServiceNotFound, self).__init__(self.msg)
-
-class MethodNotFound(AttributeError):
-    """Exception raised when unknown method given for service"""
-    def __init__(self, service, method):
-        self.msg = ERROR_STRING
-        self.msg += ("API %s not found in %s. Please check"
-                    " service help." % (method, service))
-        super(MethodNotFound, self).__init__(self.msg)
-
 class UnImplementedService(AttributeError):
     """
     This Exception gets raised when the Controller class is 

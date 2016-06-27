@@ -133,49 +133,10 @@ def run_instances(url, verb, headers, version, image_id, instance_type_id, block
 
     return requestify.make_request(url, verb, headers, params)
 
-def decrypt_instance_password(password, private_key_file, passphrase):
-    key = utils.import_ssh_key(private_key_file, passphrase)
-    encrypted_data = base64.b64decode(base64.b64decode(password))
-    print "encrypted_data :"
-    print encrypted_data
-    print ":end"
-    print [ord(c) for c in encrypted_data]
-    ciphertext = int(binascii.hexlify(encrypted_data), 16)
-    plaintext = key.decrypt(ciphertext)
-    print"cipher :"
-    print ciphertext
-    print ": end"
-    decrypted_data = utils.long_to_bytes(plaintext)
-    unpadded_data = utils.pkcs1_unpad(decrypted_data)
-    return unpadded_data 
 
-def get_password_data(url, verb, headers, version, args):
+def get_password_data(url, verb, headers, version, instance_id):
     params = {}
     params['Action'] = 'GetPasswordData'
     params['Version'] = version
-    parser.add_argument('--instance-id', required=True)
-    processed, remaining = parser.parse_known_args(args)
-    utils.populate_params_from_cli_args(params, processed)
+    params['InstanceId'] = instance_id
     response = requestify.make_request(url, verb, headers, params)
-    parser = utils.get_argument_parser()
-    parser.add_argument('--private-key-file', required=False, default=None)
-    parser.add_argument('--key-passphrase', required=False, default=None)
-    processed = parser.parse_args(remaining)
-    processed = vars(processed)
-    private_key_file = processed.get('private_key_file')
-    passphrase = processed.get('key_passphrase')
-    response_json = utils.web_response_to_json(response)
-    try:
-        response_body = response_json['GetPasswordDataResponse']
-        encrypted_password = response_body['passwordData']
-        if not private_key_file or not encrypted_password:
-            return response
-        decrypted_password = decrypt_instance_password(encrypted_password,
-                                                       private_key_file,
-                                                       passphrase)
-        response_json['GetPasswordDataResponse']['passwordData'] = \
-                                                  decrypted_password
-        return response_json
-    except KeyError as ke:
-        raise exception.UnknownOutputFormat()
-    
