@@ -1,0 +1,9 @@
+access_key="183a744121e546528bc934a4fb3eb9f0"
+secret_key="931c002147664fda9f8dc283d023acb6"
+compute_url="https://compute.ind-west-1.staging.jiocloudservices.com/"
+iam_url=""
+rds_url=""
+vpc_url=""
+dss_url=""
+secure=False
+debug=False
