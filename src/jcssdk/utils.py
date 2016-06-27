@@ -36,50 +36,8 @@ from jcssdk import exception
 SUCCESS = 0
 FAILURE = 255
 
-def load_service(service):
-    """ 
-    Import the module for requested service. Raise exception if
-    the required module isnt found.
-
-    param service: string representing the service to be loaded
-
-    return: requested module
-    """
-    try:
-        current_mod = get_dir_name(__file__)
-        return importlib.import_module('.' + service,
-                                      package=current_mod)
-    except ImportError as ie:
-        raise exception.ServiceNotFound(service)
-
-def get_module_method(controller, method, service):
-    """
-    Get the member from Controller object in mod_name. Raise
-    exception if the required member isnt found.
 
 
-    return: requested method
-    """
-    try:
-        return getattr(controller, method)
-    except AttributeError as ae:
-        raise exception.MethodNotFound(service, method)
-
-def create_controller(service, service_name):
-    """
-    Create Controller object for the particular module. Raise
-    an exception if the controller object cant be created.
-
-    param service: module loaded in memory
-
-    param service_name: string representing the module name
-
-    return: Controller object
-    """
-    try:
-        return getattr(service, 'Controller')()
-    except AttributeError as ae:
-        raise exception.UnImplementedService(service_name)
 
 def get_dir_name(filename):
     """Return the current directory name from filename
@@ -223,57 +181,6 @@ def get_protocol_and_host(url):
     else:
         return (url_parts.group(1), url_parts.group(2))
 
-def populate_params_from_cli_args(params, args):
-    """After the argparser has processed args, populate the
-       params dict, processing the given args.
-
-       param params: a dict to save the processed args
-
-       param args: Namespace object where args are saved
-
-       returns: None
-    """
-    if not isinstance(args, dict):
-        args = vars(args)
-    for arg in args:
-        key = underscore_to_camelcase(arg)
-        if isinstance(args[arg], list):
-            push_indexed_params(params, key, args[arg])
-        elif args[arg]:
-            params[key] = args[arg]
-
-def get_argument_parser():
-    """
-    Argument Parser to be used for argument parsing
-
-    The default argument parser has been overridden
-    to edit its behaviour in how the help is shown
-    and how errors are handled.
-    """
-    return argparse.ArgumentParser(add_help=False, usage=help.ERROR_STRING,
-                             formatter_class=argparse.RawTextHelpFormatter)
-
-def web_response_to_json(response):
-    """
-    Modify the web response output to json format
-
-    param response: response object from requests library
-
-    return: json object representing the response content
-    """
-    try:
-        if response:
-            resp_dict = json.loads(response.content)
-    except:
-        try:
-            resp_ordereddict = xmltodict.parse(response.content)
-            resp_json = json.dumps(resp_ordereddict, indent=4,
-                                   sort_keys=True)
-            resp_dict = json.loads(resp_json)
-        except:
-            raise exception.UnknownOutputFormat()
-    return resp_dict
-
 def import_ssh_key(private_key_file, passphrase=None):
     """
     Import contents from RSA private key file
@@ -315,19 +222,6 @@ def long_to_bytes(val):
     fmt = '%%0%dx' % (width // 4)
     s = binascii.unhexlify(fmt % val)
     return s
-
-def requestid_in_response(response):
-    """Helper function for returning request id from response of API"""
-    for keys in response:
-        if keys.lower() == 'requestid':
-            request_id = response.get(keys)
-            response.pop(keys)
-            return request_id
-        elif isinstance(response.get(keys), dict):
-            request_id = requestid_in_response(response.get(keys))
-            if request_id:
-                return request_id
-    return None
 
 def str2bool(content):
     return content.lower() in ("yes", "true", "t", "1")
