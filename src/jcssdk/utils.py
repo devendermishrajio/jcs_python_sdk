@@ -27,7 +27,9 @@ import argparse
 import json
 import binascii
 import xmltodict
+import base64
 from Crypto.PublicKey import RSA
+from jcssdk import exception
 # Set codes for success and failure of APIs.
 # This can be enhanced to return service specific
 # error codes down the line.
