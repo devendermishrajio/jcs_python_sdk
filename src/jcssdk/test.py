@@ -130,9 +130,7 @@ while not i == -1:
 		file = open('/home/gowtham/Desktop/reliance/jcs_python_sdk/import_key.pub','r')
 		key = file.readline()
 		file.close()
-		print key
 		key = base64.b64encode(key)
-		print key
 		res = compute_obj.import_key_pair(key_name = 'import_test', public_key_material = key)
 		print res.key_material
 

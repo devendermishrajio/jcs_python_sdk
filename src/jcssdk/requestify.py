@@ -23,6 +23,8 @@
 import sys
 import requests
 from jcssdk import config
+from jcssdk.compute_api.model import ErrorResponse
+from xml.sax import parseString
 from jcssdk import auth_handler
 
 common_headers = {
@@ -60,11 +62,16 @@ def make_request(url, verb, headers, params, path=None, data=None):
     request_string = request_string[:-1]
     global common_headers
     headers.update(common_headers)
-    print request_string
 
-    conn = requests.request(verb, request_string, data=data, 
+    response = requests.request(verb, request_string, data=data, 
                             verify=config.check_secure(),
                             headers=headers)
-    # print conn.getcode()
-    print conn.text
-    return conn 
+    
+    if response.status_code == 200:
+        return response
+    else:
+        error_res = ErrorResponse.ErrorResponse()
+        parseString(str(response.text), error_res)
+        print error_res.code
+        print error_res.message
+        return None     
