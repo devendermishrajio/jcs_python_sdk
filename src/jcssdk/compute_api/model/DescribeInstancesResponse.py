@@ -35,14 +35,14 @@ class DescribeInstancesResponse(ContentHandler):
 		self.CurrentData = tag
 		if tag == "blockDeviceMapping":
 			self.insideB = True
-		elif tag == "GroupSet":
+		elif tag == "groupSet":
 			self.insideG = True
 		elif self.insideB and tag == "item":
 			self.block_device = BlockDevice()
 		elif self.insideG and tag == "item":
 			self.group = Group()
 		elif tag == "item":
-			self.instance = instance()
+			self.instance = Instance()
 
 
 	def endElement(self, tag):
@@ -83,16 +83,16 @@ class DescribeInstancesResponse(ContentHandler):
 		elif self.CurrentData == "subnetId":
 			self.instance.subnet_id = content
 		elif self.CurrentData == "GroupName":
-			self.group.Group_name = content
+			self.group.group_name = content
 		elif self.CurrentData == "GroupId":
-			self.group.Group_id = content
+			self.group.group_id = content
 		elif self.CurrentData == "vpcId":
 			self.instance.vpc_id = content
 		elif self.CurrentData == "instanceType":
 			self.instance.instance_type = content
 		elif self.CurrentData == "privateIpAddress":
 			self.instance.private_ip_address = content
-
+		
 		self.CurrentData = ""
 
 
@@ -121,8 +121,8 @@ class Instance:
 
 class Group:
 	def __init__(self):
-		self.Group_name = ""
-		self.Group_id = ""
+		self.group_name = ""
+		self.group_id = ""
 
 class BlockDevice:
 	def __init__(self):

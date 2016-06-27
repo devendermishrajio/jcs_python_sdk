@@ -20,7 +20,7 @@
 # IN THE SOFTWARE.
 
 from xml.sax import ContentHandler
-class DescibeImagesResponse(ContentHandler):
+class DescribeImagesResponse(ContentHandler):
 	def __init__(self):
 		self.CurrentData = ""
 		self.images = []
@@ -29,7 +29,7 @@ class DescibeImagesResponse(ContentHandler):
 	def startElement(self, tag, attributes):
 		self.CurrentData = tag
 		if tag == "item":
-			self.image = image()
+			self.image = Image()
 	
 	def endElement(self, tag):
 		if tag == "item":
@@ -60,7 +60,7 @@ class DescibeImagesResponse(ContentHandler):
 
 
 
-class image:
+class Image:
 	def __init__(self):
 		self.device_name = ""
 		self.delete_on_termination = ""

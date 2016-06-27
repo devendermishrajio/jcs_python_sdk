@@ -25,6 +25,7 @@ from jcssdk.compute_api import instance
 from jcssdk.compute_api import volume
 from jcssdk.compute_api import snapshot
 from jcssdk.compute_api.model import DescribeInstancesResponse
+from jcssdk.compute_api.model import DescribeImagesResponse
 from xml.sax import parseString
 
 class Controller(object):
