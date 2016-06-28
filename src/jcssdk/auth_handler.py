@@ -87,7 +87,6 @@ class Authorization(object):
             val = urllib.parse.quote(val, safe='-_~')
             pairs.append(urllib.parse.quote(key, safe='') + '=' + val)
         qs = '&'.join(pairs)
-        print qs
         return qs
 
     def string_to_sign(self, params):
