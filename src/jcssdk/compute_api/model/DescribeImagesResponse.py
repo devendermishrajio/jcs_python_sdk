@@ -20,6 +20,7 @@
 # IN THE SOFTWARE.
 
 from xml.sax import ContentHandler
+from jcssdk.Utils import str2bool
 class DescribeImagesResponse(ContentHandler):
 	def __init__(self):
 		self.CurrentData = ""
@@ -47,7 +48,7 @@ class DescribeImagesResponse(ContentHandler):
 		elif self.CurrentData == "name":
 			self.image.name = content
 		elif self.CurrentData == "isPublice":
-			self.image.is_public = bool(content)
+			self.image.is_public = str2bool(content)
 		elif self.CurrentData == "imageId":
 			self.image.image_id = content
 		elif self.CurrentData == "imageState":
