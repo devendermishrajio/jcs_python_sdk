@@ -30,7 +30,7 @@ class ErrorResponse(ContentHandler):
 
 	def characters(self, content):
 		if self.CurrentData == "Code":
-			self.code = content
+			self.code = str(content)
 		elif self.CurrentData == "Message":
-			self.message = content
+			self.message = str(content)
 		self.CurrentData = ""

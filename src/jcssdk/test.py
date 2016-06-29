@@ -132,7 +132,8 @@ while not i == -1:
 		file.close()
 		key = base64.b64encode(key)
 		res = compute_obj.import_key_pair(key_name = 'import_test', public_key_material = key)
-		print res.key_material
+		if not res == None:
+			print res.key_material
 
 	# get_password_data
 	elif i == 22:

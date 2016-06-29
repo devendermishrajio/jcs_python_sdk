@@ -50,7 +50,7 @@ class RunInstancesResponse(ContentHandler):
 
 	def endElement(self, tag):
 		if insideB and tag == "item":
-			self.instance.block_device_mapping.append(block_device)
+			self.instance.block_device_Amapping.append(block_device)
 		elif insideG and tag == "item":
 			self.instance.groupset.append(group)
 		elif tag == "blockDeviceMapping":

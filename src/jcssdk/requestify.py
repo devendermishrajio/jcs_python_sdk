@@ -44,34 +44,41 @@ def make_request(url, verb, headers, params, path=None, data=None):
     generation mechanism under the hood.
 
     """
+    try :
+        access_key = config.get_access_key()
+        secret_key = config.get_secret_key()
+        # Always calculate signature without trailing '/' in url
+        if url.endswith('/'):
+            url = url[:-1]
+        auth_obj = auth_handler.Authorization(url, verb, access_key, 
+                                              secret_key, headers)
+        auth_obj.add_authorization(params)
 
-    access_key = config.get_access_key()
-    secret_key = config.get_secret_key()
-    # Always calculate signature without trailing '/' in url
-    if url.endswith('/'):
-        url = url[:-1]
-    auth_obj = auth_handler.Authorization(url, verb, access_key, 
-                                          secret_key, headers)
-    auth_obj.add_authorization(params)
+        # Now restore the trailing '/' in url
+        url += '/?'
+        request_string = url
+        for key, val in params.items():
+            request_string += str(key) + '=' + str(val) + '&'
+        request_string = request_string[:-1]
+        global common_headers
+        headers.update(common_headers)
+        # print request_string
+        response = requests.request(verb, request_string, data=data, 
+                                verify=config.check_secure(),
+                                headers=headers)
 
-    # Now restore the trailing '/' in url
-    url += '/?'
-    request_string = url
-    for key, val in params.items():
-        request_string += str(key) + '=' + str(val) + '&'
-    request_string = request_string[:-1]
-    global common_headers
-    headers.update(common_headers)
-
-    response = requests.request(verb, request_string, data=data, 
-                            verify=config.check_secure(),
-                            headers=headers)
-    
-    if response.status_code == 200:
-        return response
-    else:
-        error_res = ErrorResponse.ErrorResponse()
-        parseString(str(response.text), error_res)
-        print error_res.code
-        print error_res.message
-        return None     
+        if response.status_code == 200:
+            return response
+        else:
+            error_res = ErrorResponse.ErrorResponse()
+            parseString(str(response.text), error_res)
+            print error_res.code
+            print error_res.message
+            return None
+    except Exception as e:
+        sys.stderr.write('Connection unsuccessful...!!\n')
+        sys.stderr.write(str(e))
+        sys.stderr.write("\n")
+        if config.check_debug():
+            raise
+        sys.exit(1)
