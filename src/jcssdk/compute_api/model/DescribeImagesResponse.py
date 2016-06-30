@@ -20,7 +20,7 @@
 # IN THE SOFTWARE.
 
 from xml.sax import ContentHandler
-from jcssdk.Utils import str2bool
+from jcssdk.utils import str2bool
 class DescribeImagesResponse(ContentHandler):
 	def __init__(self):
 		self.CurrentData = ""

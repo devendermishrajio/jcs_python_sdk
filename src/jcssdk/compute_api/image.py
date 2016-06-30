@@ -31,7 +31,7 @@ def describe_images(url, verb, headers, version, image_ids=None):
 
 	if not image_ids == None:
 		i=1
-		for image_id in args.get_image_ids():
+		for image_id in image_ids:
 			params['ImageId.'+str(i)] = image_id
 			i = i+1;	
 	
