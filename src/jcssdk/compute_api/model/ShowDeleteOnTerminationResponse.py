@@ -20,7 +20,7 @@
 # IN THE SOFTWARE.
 
 from xml.sax import ContentHandler
-class DeleteOnTerminationResponse(ContentHandler):
+class ShowDeleteOnTerminationResponse(ContentHandler):
 	def __init__(self):
 		self.CurrentData = ""
 		self.instance_id = ""
@@ -37,3 +37,4 @@ class DeleteOnTerminationResponse(ContentHandler):
 			self.volume_id= content
 		elif self.CurrentData == "deleteOnTermination":
 			self.CurrentData = bool(content)
+		self.CurrentData = ""

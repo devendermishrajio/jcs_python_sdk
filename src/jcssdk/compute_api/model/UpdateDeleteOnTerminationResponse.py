@@ -20,6 +20,7 @@
 # IN THE SOFTWARE.
 
 from xml.sax import ContentHandler
+from jcssdk.utils import str2bool
 class UpdateDeleteOnTerminationResponse(ContentHandler):
 	def __init__(self):
 		self.CurrentData = ""
@@ -36,4 +37,5 @@ class UpdateDeleteOnTerminationResponse(ContentHandler):
 		elif self.CurrentData == "volumeId":
 			self.volume_id= content
 		elif self.CurrentData == "deleteOnTermination":
-			self.CurrentData = bool(content)
+			self.CurrentData = str2bool(content)
+		self.CurrentData = ""

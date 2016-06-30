@@ -32,3 +32,4 @@ class DeleteVolumeResponse(ContentHandler):
 	def characters(self, content):
 		if self.CurrentData == "return":
 			self.result = str2bool(content)
+		self.CurrentData = ""

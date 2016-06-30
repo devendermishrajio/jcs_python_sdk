@@ -31,6 +31,5 @@ class DeleteKeyPairResponse(ContentHandler):
 
 	def characters(self, content):
 		if self.CurrentData == "return":
-			content = str(content).replaceAll('\n','')
-			print content
 			self.result = str2bool(content)
+		self.CurrentData = ""
