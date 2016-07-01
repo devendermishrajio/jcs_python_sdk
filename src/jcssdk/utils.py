@@ -224,7 +224,7 @@ def long_to_bytes(val):
     return s
 
 def str2bool(content):
-    return content.lower().strip('\n') in ("yes", "true", "t", "1")
+    return content.lower().strip('\n') in ("yes", "true", "True", "1")
      
 
 def decrypt_instance_password(password, private_key_file, passphrase):

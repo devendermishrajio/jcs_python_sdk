@@ -23,6 +23,7 @@ from xml.sax import ContentHandler
 from DescribeInstancesResponse import Instance
 from DescribeInstancesResponse import Group
 from DescribeInstancesResponse import BlockDevice
+from utils import str2bool
 class RunInstancesResponse(ContentHandler):
 	def __init__(self):
 		self.CurrentData = ""
@@ -37,28 +38,28 @@ class RunInstancesResponse(ContentHandler):
 	def startElement(self, tag, attributes):
 		self.CurrentData = tag
 		if tag == "blockDeviceMapping":
-			insideB = True
+			self.insideB = True
 		elif tag == "groupSet":
-			insideG = True
-		elif insideB and tag == "item":
+			self.insideG = True
+		elif self.insideB and tag == "item":
 			self.block_device = BlockDevice()
-		elif insideG and tag == "item":
+		elif self.insideG and tag == "item":
 			self.group = Group()
 		elif tag == "item":
-			self.instance = instance()
+			self.instance = Instance()
 
 
 	def endElement(self, tag):
-		if insideB and tag == "item":
-			self.instance.block_device_Amapping.append(block_device)
-		elif insideG and tag == "item":
-			self.instance.groupset.append(group)
+		if self.insideB and tag == "item":
+			self.instance.block_device_mapping.append(self.block_device)
+		elif self.insideG and tag == "item":
+			self.instance.group_set.append(self.group)
 		elif tag == "blockDeviceMapping":
 			self.insideB = False
 		elif tag == "groupSet":
 			self.insideG = False
 		elif tag == "item":
-			self.instances.append(instance)
+			self.instances.append(self.instance)
 
 	def characters(self, content):
 		if self.CurrentData == "status":
@@ -66,7 +67,7 @@ class RunInstancesResponse(ContentHandler):
 		elif self.CurrentData == "deviceName":
 			self.block_device.device_name = content
 		elif self.CurrentData == "deleteOnTermination":
-			self.block_device.delete_on_termination = bool(content)
+			self.block_device.delete_on_termination = str2bool(content)
 		elif self.CurrentData == "volumeId":
 			self.block_device.volume_id = content
 		elif self.CurrentData == "dnsName":

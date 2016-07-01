@@ -21,8 +21,10 @@
 #
 
 import os
+import ConfigParser
 from jcssdk import exception
-import myconfig
+from jcssdk import utils
+
 """
   The following endpoints can be overridden using environment variable
   The environment variable should be in the form of SERVICE_URL, where
@@ -108,44 +110,24 @@ class ConfigHandler(object):
     3. Processing general arguments given by user
     """
     def __init__(self):
+        self.myconfig = ConfigParser.RawConfigParser()
+        self.myconfig.read('../config.properties')
+
         self.endpoints = endpoints
-        self.secure = myconfig.secure
-        self.debug = myconfig.debug
-        self.access_key = myconfig.access_key
-        self.secret_key = myconfig.secret_key
+        self.secure = utils.str2bool(self.myconfig.get('Authorization', 'secure'))
+        self.debug = utils.str2bool(self.myconfig.get('Authorization', 'debug'))
+        self.access_key = self.myconfig.get('Authorization', 'access_key')
+        self.secret_key = self.myconfig.get('Authorization', 'secret_key')
+
         if not self.access_key or not self.secret_key:
             raise exception.UnknownCredentials()
 
     def get_service_url(self, service):
-        if service == 'compute':
-            if myconfig.compute_url == "":
-                url = self.endpoints.get(service)
-            else:
-                url = myconfig.compute_url
-
-        if service == 'iam':
-            if myconfig.compute_url == "":
-                url = self.endpoints.get(service)
-            else:
-                url = myconfig.iam_url
-
-        if service == 'rds':
-            if myconfig.compute_url == "":
-                url = self.endpoints.get(service)
-            else:
-                url = myconfig.rds_url
-
-        if service == 'dss':
-            if myconfig.compute_url == "":
-                url = self.endpoints.get(service)
-            else:
-                url = myconfig.dss_url
-
-        if service == 'vpc':
-            if myconfig.compute_url == "":
-                url = self.endpoints.get(service)
-            else:
-                url = myconfig.vpc_url
+        service_url = self.myconfig.get(service,'url')
+        if service_url == "" :
+            url = self.endpoints.get(service)
+        else:
+            url = service_url
         return url
 
     def get_access_key(self):

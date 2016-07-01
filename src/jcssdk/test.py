@@ -19,7 +19,7 @@ while not i == -1:
 
 	# Describe instances
 	elif i == 1:
-		res = compute_obj.describe_instances(instance_ids = None)
+		res = compute_obj.describe_instances()
 		if not res == None:
 			for instance in res.instances:
 				print instance.instance_id
@@ -54,14 +54,15 @@ while not i == -1:
 
 	# terminate_instances
 	elif i == 6:
-		res = compute_obj.terminate_instances(instance_id = ['i-c85cf209'])
+		res = compute_obj.terminate_instances(instance_ids = ['i-56133bc7'])
 		if not res == None:
 			for instance in res.instances:
 				print instance.current_state
 
 	# run_instances
 	elif i == 7:
-		res = compute_obj.run_instances()
+		block = [{'device_name':'/dev/vdb', 'delete_on_termination':'true','volume_size':'17'},{'device_name':'/dev/vdc	', 'delete_on_termination':'true','volume_size':'18'}]
+		res = compute_obj.run_instances(image_id = 'jmi-bc345d58', instance_type_id = "c1.small", key_name = 'intern', blocks = block)
 		if not res == None:
 			for instance in res.instances:
 				print instance.instance_id
@@ -93,38 +94,39 @@ while not i == -1:
 
 	# delete_snapshot
 	elif i == 12:
-		res = compute_obj.delete_snapshot(snapshot_id = '2df5d2c6-4adb-4c3a-9019-5a3db208bb41')
+		res = compute_obj.delete_snapshot(snapshot_id = '58c84c92-e06a-43a4-8ffa-669799b10f6f')
 		if not res == None:
 			print res.result
 
 	# describe_snapshots
 	elif i == 13:
-		res = compute_obj.describe_snapshots()
+		res = compute_obj.describe_snapshots(snpashot_ids = ['54790b1f-0d24-4375-9d33-1437036ef877','60e015f7-0e77-4c26-84c2-5f01f4f4bfc7'])
 		if not res == None:
 			for snapshot in res.snapshots:
 				print snapshot.snapshot_id
+				print snapshot.size
 
 	# create_volume
 	elif i == 14:
-		res = compute_obj.create_volume(size = 13)
+		res = compute_obj.create_volume(size = 13,snapshot_id = '60e015f7-0e77-4c26-84c2-5f01f4f4bfc7')
 		if not res == None:
 			print res.volume_id
 
 	# delete_volume
 	elif i == 15:
-		res = compute_obj.delete_volume(volume_id = '91d82f45-6f08-407e-a46a-3e8b9ddb78b0')
+		res = compute_obj.delete_volume(volume_id = '60d042b5-e682-4c3e-a546-401999a5ab85')
 		if not res == None:
 			print res.result
 
 	# attach_volume
 	elif i == 16:
-		res = compute_obj.attach_volume(volume_id = '91d82f45-6f08-407e-a46a-3e8b9ddb78b0', instance_id = 'i-c85cf209', device ='/dev/vdb')
+		res = compute_obj.attach_volume(volume_id = '60d042b5-e682-4c3e-a546-401999a5ab85', instance_id = 'i-c85cf209', device ='/dev/vdb')
 		if not res == None:
 			print res.volume_id
 
 	# detach_volume
 	elif i == 17:
-		res = compute_obj.detach_volume(volume_id = '91d82f45-6f08-407e-a46a-3e8b9ddb78b0')
+		res = compute_obj.detach_volume(volume_id = '60d042b5-e682-4c3e-a546-401999a5ab85',instance_id = 'i-c85cf209')
 		if not res == None:
 			print res.volume_id
 
@@ -137,15 +139,17 @@ while not i == -1:
 
 	# show_delete_on_termination_flag
 	elif i == 19:
-		res = compute_obj.show_delete_on_termination_flag(volume_id = '91d82f45-6f08-407e-a46a-3e8b9ddb78b0')
+		res = compute_obj.show_delete_on_termination_flag(volume_id = '60d042b5-e682-4c3e-a546-401999a5ab85')
 		if not res == None:
 			print res.delete_on_termination
+			print res.volume_id
 
 	# update_delete_on_termination_flag
 	elif i == 20:
-		res = compute_obj.update_delete_on_termination_flag(volume_id = '91d82f45-6f08-407e-a46a-3e8b9ddb78b0', delete_on_termination = True)
+		res = compute_obj.update_delete_on_termination_flag(volume_id = '60d042b5-e682-4c3e-a546-401999a5ab85', delete_on_termination = False)
 		if not res == None:
 			print res.delete_on_termination
+			print res.volume_id
 
 	# import_key_pair
 	elif i == 21:
@@ -159,7 +163,7 @@ while not i == -1:
 
 	# get_password_data
 	elif i == 22:
-		res = compute_obj.get_password_data(instance_id = 'i-c85cf209' ,private_key_file = "/~/key2.pem")
+		res = compute_obj.get_password_data(instance_id = 'i-c85cf209' ,private_key_file = "/home/gowtham/Desktop/reliance/jcs_python_sdk/key.pem")
 		if not res == None:
 			print res.password_data
 

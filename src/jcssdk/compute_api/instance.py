@@ -108,9 +108,9 @@ def run_instances(url, verb, headers, version, image_id, instance_type_id, block
     	i=1
         for block in blocks :
     		if not block == None :
-    			params['BlockDeviceMapping.' + str(i) + '.DeviceName'] = block.device_name
-    			params['BlockDeviceMapping.' + str(i) + '.DeleteOnTermiantion'] = str(block.delete_on_termination)
-    			params['BlockDeviceMapping.' + str(i) + '.VolumeSize'] = str(block.volume_size)
+    			params['BlockDeviceMapping.' + str(i) + '.DeviceName'] = block['device_name']
+    			params['BlockDeviceMapping.' + str(i) + '.DeleteOnTermiantion'] = block['delete_on_termination']
+    			params['BlockDeviceMapping.' + str(i) + '.VolumeSize'] = block['volume_size']
     		i+=1
 
 

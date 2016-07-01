@@ -49,7 +49,7 @@ class DescribeInstancesResponse(ContentHandler):
 		if self.insideB and tag == "item":
 			self.instance.block_device_mapping.append(self.block_device)
 		elif self.insideG and tag == "item":
-			self.instance.Groupset.append(self.group)
+			self.instance.group_set.append(self.group)
 		elif tag == "blockDeviceMapping":
 			self.insideB = False
 		elif tag == "groupSet":
@@ -116,7 +116,7 @@ class Instance:
 		self.vpc_id = ""
 		self.instance_type = ""
 		self.private_ip_address = ""
-		self.Groupset = []
+		self.group_set = []
 		self.block_device_mapping = []
 
 class Group:

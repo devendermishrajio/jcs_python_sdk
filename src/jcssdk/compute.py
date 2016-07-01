@@ -43,8 +43,8 @@ from jcssdk.compute_api.model import GetPasswordDataResponse
 from jcssdk.compute_api.model import ImportKeyPairsResponse
 from jcssdk.compute_api.model import RebootInstancesResponse
 from jcssdk.compute_api.model import RunInstancesResponse
-from jcssdk.compute_api.model import ShowDeleteOnTerminationResponse
-from jcssdk.compute_api.model import UpdateDeleteOnTerminationResponse
+from jcssdk.compute_api.model import ShowDeleteOnTerminationFlagResponse
+from jcssdk.compute_api.model import UpdateDeleteOnTerminationFlagResponse
 from jcssdk.compute_api.model import StopInstancesResponse
 from jcssdk.compute_api.model import StartInstancesResponse
 from jcssdk.compute_api.model import TerminateInstancesResponse
@@ -248,7 +248,7 @@ class Controller(object):
         """
         response = instance.terminate_instances(self.url, self.verb,
                                             self.headers, self.version,
-                                            args)
+                                            instance_ids)
         if response is not None :
             res = TerminateInstancesResponse.TerminateInstancesResponse()
             parseString(str(response.text), res)
@@ -322,6 +322,7 @@ class Controller(object):
                                       self.version, image_id, instance_type_id, blocks, instance_count, subnet_id, private_ip_address, security_group_ids, key_name)
         if response is not None :
             res = RunInstancesResponse.RunInstancesResponse()
+            print response.text
             parseString(str(response.text), res)
             return res
         else :
