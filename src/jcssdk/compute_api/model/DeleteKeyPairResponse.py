@@ -21,11 +21,15 @@
 
 from xml.sax import ContentHandler
 from jcssdk.utils import str2bool
+##This Class Object handles the response of Delete KeyPair Request
 class DeleteKeyPairResponse(ContentHandler):
+	
 	def __init__(self):
 		self.CurrentData = ""
+		## @var result
+		# Boolean: Whether the Delete Key Pair Request was successful or not
 		self.result = None
-
+	#Override ContentHandler method for XML Parsing 		
 	def startElement(self, tag, attributes):
 		self.CurrentData = tag
 

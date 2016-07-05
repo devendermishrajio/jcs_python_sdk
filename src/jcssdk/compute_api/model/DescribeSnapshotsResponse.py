@@ -20,12 +20,16 @@
 # IN THE SOFTWARE.
 
 from xml.sax import ContentHandler
+#This Class handles Describe Snapshot Request's Response
 class DescribeSnapshotsResponse(ContentHandler):
 	def __init__(self):
 		self.CurrentData = ""
+		## @var snapshots
+		# List of Class Snapshot Objects
 		self.snapshots= []
 		
 		self.snapshot = None
+	#Override ContentHandler method for XML Parsing 
 	def startElement(self, tag, attributes):
 		self.CurrentData = tag
 		if tag == "item":
@@ -50,10 +54,16 @@ class DescribeSnapshotsResponse(ContentHandler):
 		self.CurrentData = ""
 
 
+# Class Snapshot
 class Snapshot:
 	def __init__(self):
+		## @var status
 		self.status = ""
+		## @var volume_id
 		self.volume_id = ""
+		## @var size
 		self.size = None
+		## @var start_time
 		self.start_time = ""
+		## @var snapshot_id
 		self.snapshot_id = ""

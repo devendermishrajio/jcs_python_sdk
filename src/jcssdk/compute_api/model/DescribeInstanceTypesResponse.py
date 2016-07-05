@@ -20,12 +20,13 @@
 # IN THE SOFTWARE.
 
 from xml.sax import ContentHandler
+##This Class Object handles the response of Describe Instances Request
 class DescribeInstanceTypesResponse(ContentHandler):
 	def __init__(self):
 		self.CurrentData = ""
 		self.instances = []
 		self.instance_type = None
-		
+	#Override ContentHandler method for XML Parsing 
 	def startElement(self, tag, attributes):
 		self.CurrentData = tag
 		if tag =="item":
@@ -45,8 +46,12 @@ class DescribeInstanceTypesResponse(ContentHandler):
 			self.instance_type.ram = float(content)
 		self.CurrentData = ""
 
+## Class InstanceType
 class InstanceType:
 	def __init__(self):
+		## @var vcpus
 		self.vcpus = None
+		## @var ram
 		self.ram = None
+		## @var id
 		self.id = ""

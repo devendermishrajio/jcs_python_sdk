@@ -20,9 +20,12 @@
 # IN THE SOFTWARE.
 
 from xml.sax import ContentHandler
+## This Class Handles Reboot Instances request's response
 class RebootInstancesResponse(ContentHandler):
 	def __init__(self):
 		self.CurrentData = ""
+		## @var instances
+		# List of Objects of Class Instance State
 		self.instances = []
 		self.instance = None
 		
@@ -46,8 +49,12 @@ class RebootInstancesResponse(ContentHandler):
 		self.CurrentData = ""
 
 
+## Class InstanceState
 class InstanceState:
 	def __init__(self):
+		## @var instance_id
 		self.instance_id = ""
+		## @var previous_state
 		self.previous_state = ""
+		## @var current_state
 		self.current_state = ""

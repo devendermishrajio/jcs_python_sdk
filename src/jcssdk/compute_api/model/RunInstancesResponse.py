@@ -24,9 +24,12 @@ from DescribeInstancesResponse import Instance
 from DescribeInstancesResponse import Group
 from DescribeInstancesResponse import BlockDevice
 from utils import str2bool
+## This Class handles RunInstances Request's Response
 class RunInstancesResponse(ContentHandler):
 	def __init__(self):
 		self.CurrentData = ""
+		## @var instances
+		# List of objects of class Instance
 		self.instances = []
 		
 		self.instance = None

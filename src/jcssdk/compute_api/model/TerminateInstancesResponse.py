@@ -21,9 +21,11 @@
 
 from xml.sax import ContentHandler
 from RebootInstancesResponse import InstanceState
+## This Class Handles Terminate Instances Request's Response
 class TerminateInstancesResponse(ContentHandler):
 	def __init__(self):
 		self.CurrentData = ""
+		## @var instances
 		self.instances = []
 		self.instance = None
 		

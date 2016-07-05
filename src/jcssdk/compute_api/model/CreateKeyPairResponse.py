@@ -20,13 +20,20 @@
 # IN THE SOFTWARE.
 
 from xml.sax import ContentHandler
+##This Class Object handles the response of Create Key Request
 class CreateKeyPairResponse(ContentHandler):
 	def __init__(self):
 		self.CurrentData = ""
+		## @var key_name
+		# Key Name of the Created Key Pair
 		self.key_name = ""
+		## @var Key Fingerprint
+		# Key Fingerprint of the Created Key Pair
 		self.key_fingerprint = ""
+		## @var Key Material
+		# Key material of the Created Key.
 		self.key_material = ""
-
+	#Override ContentHandler method for XML Parsing 
 	def startElement(self, tag, attributes):
 		self.CurrentData = tag
 

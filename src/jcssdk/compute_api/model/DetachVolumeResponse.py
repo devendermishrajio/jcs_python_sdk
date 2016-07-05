@@ -20,13 +20,19 @@
 # IN THE SOFTWARE.
 
 from xml.sax import ContentHandler
+## This Class handles Detach Volume Request's Response
 class DetachVolumeResponse(ContentHandler):
 	def __init__(self):
 		self.CurrentData = ""
+		## @var status
 		self.status = ""
+		## @var instance_id
 		self.instance_id = ""
+		## @var device
 		self.device = None
+		## @var volume_id
 		self.volume_id = ""
+		## @var delete_on_termination
 		self.delete_on_termination = ""
 
 	def startElement(self, tag, attributes):

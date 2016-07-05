@@ -20,10 +20,13 @@
 # IN THE SOFTWARE.
 
 from xml.sax import ContentHandler
+## This Class Handles Import Key Pair Request's Response
 class ImportKeyPairsResponse(ContentHandler):
 	def __init__(self):
 		self.CurrentData = ""
+		## @var key_fingerprint
 		self.key_fingerprint = ""
+		## @var key_material
 		self.key_material = ""
 		
 	def startElement(self, tag, attributes):

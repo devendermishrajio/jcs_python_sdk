@@ -21,9 +21,12 @@
 
 from xml.sax import ContentHandler
 from RebootInstancesResponse import InstanceState
+## This Class handles the Start Instance Request's response
 class StartInstancesResponse(ContentHandler):
 	def __init__(self):
 		self.CurrentData = ""
+		## @var instances
+		# List of Objects of Class Instance
 		self.instances = []
 		self.instance = None
 		

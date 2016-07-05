@@ -20,12 +20,15 @@
 # IN THE SOFTWARE.
 
 from xml.sax import ContentHandler
+## This Class handle Describe Key Pair Request's Response
 class DescribeKeyPairsResponse(ContentHandler):
 	def __init__(self):
 		self.CurrentData = ""
+		## @var key_pairs
+		# List of Key Pairs
 		self.key_pairs = []
 		self.key_pair = None
-		
+	#Override ContentHandler method for XML Parsing 
 	def startElement(self, tag, attributes):
 		self.CurrentData = tag
 		if tag =="item":
@@ -45,5 +48,7 @@ class DescribeKeyPairsResponse(ContentHandler):
 
 class KeyPair:
 	def __init__(self):
+		## @var Key_fingerprint
 		self.key_fingerprint = ""
+		## @var key_material
 		self.key_name  = ""

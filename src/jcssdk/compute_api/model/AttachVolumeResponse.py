@@ -20,15 +20,27 @@
 # IN THE SOFTWARE.
 
 from xml.sax import ContentHandler
+##This Class Object handles the response of AttachVolume Request
 class AttachVolumeResponse(ContentHandler):
+	
+	
 	def __init__(self):
 		self.CurrentData = ""
+		## @var device_name
+		# Device Name of the attached volume
 		self.device_name = ""
+		## @var instance_id
+		# Instance ID to which the  volume was attached
 		self.instance_id = ""
+		## @var delete on Termination
 		self.delete_on_termination = ""
+		## @var volume_id
+		# Volume ID of the attached volume
 		self.volume_id = ""
+		## @var status
+		# Status of the Volume request to attach
 		self.status = ""
-
+	#Override ContentHandler method for XML Parsing 
 	def startElement(self, tag, attributes):
 		self.CurrentData = tag
 

@@ -20,11 +20,15 @@
 # IN THE SOFTWARE.
 
 from xml.sax import ContentHandler
+## This class handle Get Password Data Request's Response
 class GetPasswordDataResponse(ContentHandler):
 	def __init__(self):
 		self.CurrentData = ""
+		## @var instance_id
 		self.instance_id = ""
+		## @var password_data
 		self.password_data = ""
+		## @var time_stamp
 		self.time_stamp = ""
 
 	def startElement(self, tag, attributes):

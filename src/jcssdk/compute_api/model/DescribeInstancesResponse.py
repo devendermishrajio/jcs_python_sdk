@@ -20,9 +20,12 @@
 # IN THE SOFTWARE.
 
 from xml.sax import ContentHandler
+## Class to handle Describe instances request's 
 class DescribeInstancesResponse(ContentHandler):
 	def __init__(self):
 		self.CurrentData = ""
+		## @var instances
+		# A list of instances
 		self.instances = []
 		
 		self.instance = None
@@ -95,38 +98,59 @@ class DescribeInstancesResponse(ContentHandler):
 		
 		self.CurrentData = ""
 
-
-
-
-
-
-
-
-
+## Class Instance
 class Instance:
 	def __init__(self):
+		## @var dns_name
 		self.dns_name = ""
+		## @var instance_id
+		# Instance ID of the Instance
 		self.instance_id = ""
+		## @var instance_state
+		# Instance State of the instance 
 		self.instance_state = ""
+		## @var image_id
+		# Image ID of the image
 		self.image_id = ""
+		## @var private_dns_name
 		self.private_dns_name = ""
+		## @var key_name
 		self.key_name = ""
+		## @var launch_time
 		self.launch_time = ""
+		## @var subnet_id
+		# Subnet Id to which the image belongs
 		self.subnet_id = ""
+		## @var vpc_id
+		# Virtual CPU ID 
 		self.vpc_id = ""
+		## @var instance_type
 		self.instance_type = ""
+		## @var private_ip_address
 		self.private_ip_address = ""
+		## @var group_set
+		# List of Group associated with the image
 		self.group_set = []
+		## @var block_device_mapping
+		# List of BlockDevice 
 		self.block_device_mapping = []
 
+## Class Group
 class Group:
 	def __init__(self):
+		## @var group_name
 		self.group_name = ""
+		## @var group_id
 		self.group_id = ""
 
+## Class BlockDevice
 class BlockDevice:
 	def __init__(self):
+		## @var status
 		self.status = ""
+		## @var device_name
 		self.device_name = ""
+		## @var delete_on_termination
 		self.delete_on_termination = None
+		## @var volume_id
 		self.volume_id = ""

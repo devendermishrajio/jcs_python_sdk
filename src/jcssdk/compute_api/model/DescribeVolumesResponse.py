@@ -20,15 +20,19 @@
 # IN THE SOFTWARE.
 
 from xml.sax import ContentHandler
+##This Class handles Describe Volume Request's Response
 class DescribeVolumesResponse(ContentHandler):
 	def __init__(self):
 		self.CurrentData = ""
+		## @var volumes
+		# List of volume class object
 		self.volumes = []
 		
 		self.volume = None
 		self.insideA = False
 		self.attachment = None
-
+	
+	#Override ContentHandler method for XML Parsing 
 	def startElement(self, tag, attributes):
 		self.CurrentData = tag
 		if tag == "attachmentSet":
@@ -72,18 +76,29 @@ class DescribeVolumesResponse(ContentHandler):
 
 
 
-
+## Class Volume
 class Volume:
 	def __init__(self):
+		## @var status
+		# Current Status of the volume
 		self.status = ""
+		## @var volume_id
 		self.volume_id = ""
+		## @var size
 		self.size = None
+		## @var create_time
 		self.create_time = ""
+		## @var snapshot_id
 		self.snapshot_id = ""
+		## @var attachment_set
+		# List of objects of class Attachment
 		self.attachment_set = []
 		
 
+## Class Attachment
 class Attachment:
 	def __init__(self):
+		## @var device
 		self.device = ""
+		## @var instance_id
 		self.instance_id = ""

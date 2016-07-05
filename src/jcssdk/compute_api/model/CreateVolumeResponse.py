@@ -20,15 +20,25 @@
 # IN THE SOFTWARE.
 
 from xml.sax import ContentHandler
+## This Class Object handles the response of Create Snapshot Response
 class CreateVolumeResponse(ContentHandler):
+	
 	def __init__(self):
 		self.CurrentData = ""
+		## @var status
+		# Status of the Volume Created
 		self.status = ""
+		## @var snapshot_id
+		# Snapshot ID linked with the Volume
 		self.snapshot_id = ""
+		## @var size
+		# volume size
 		self.size = None
+		## @var volume_id
 		self.volume_id = ""
+		## @var create_time
 		self.create_time = ""
-
+	#Override ContentHandler method for XML Parsing 
 	def startElement(self, tag, attributes):
 		self.CurrentData = tag
 

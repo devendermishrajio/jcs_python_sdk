@@ -21,12 +21,17 @@
 
 from xml.sax import ContentHandler
 from jcssdk.utils import str2bool
+## This Class Object handles the response of Describe Images Request
 class DescribeImagesResponse(ContentHandler):
+	
 	def __init__(self):
 		self.CurrentData = ""
+		## @var images
+		# List of Images.
 		self.images = []
 		self.image = None
-	
+
+	#Override ContentHandler method for XML Parsing 
 	def startElement(self, tag, attributes):
 		self.CurrentData = tag
 		if tag == "item":
@@ -60,16 +65,29 @@ class DescribeImagesResponse(ContentHandler):
 		self.CurrentData = ""
 
 
-
+## Class Image
 class Image:
 	def __init__(self):
+		## @var device_name
+		# device name of volume attached to image
 		self.device_name = ""
+		## @var delete_on_termination
+		# delete on termination flag of the volume
 		self.delete_on_termination = ""
+		## @var volume_size
+		# volume_size of the volume attached with image
 		self.volume_size = 0.0
+		## @var snapshot_id
 		self.snapshot_id = ""
+		## @var name
 		self.name = ""
+		## @var is_public
 		self.is_public = 0;
+		## @var image_id
 		self.image_id = ""
+		## @var image_state
 		self.image_state = "" 
+		## @var architecture
 		self.architecture = ""
+		## @var image_type
 		self.image_type = ""

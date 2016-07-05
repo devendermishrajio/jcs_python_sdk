@@ -20,12 +20,16 @@
 # IN THE SOFTWARE.
 
 from xml.sax import ContentHandler
-from jcssdk.utils import str2bool	
+from jcssdk.utils import str2bool
+## This Class Handles Show Delete On termination Flag Request's Response	
 class ShowDeleteOnTerminationFlagResponse(ContentHandler):
 	def __init__(self):
 		self.CurrentData = ""
+		## @var instance_id
 		self.instance_id = ""
+		## @var volume_id
 		self.volume_id = ""
+		## @var delete_on_termination
 		self.delete_on_termination = None
 
 	def startElement(self, tag, attributes):
