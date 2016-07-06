@@ -111,7 +111,7 @@ class ConfigHandler(object):
     """
     def __init__(self):
         self.myconfig = ConfigParser.RawConfigParser()
-        self.myconfig.read('../config.properties')
+        self.myconfig.read('../../config.properties')
 
         self.endpoints = endpoints
         self.secure = utils.str2bool(self.myconfig.get('Authorization', 'secure'))

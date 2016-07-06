@@ -38,7 +38,7 @@ class UnknownCredentials(Exception):
     for the user are not set in the environment
     """
     def __init__(self):
-        self.msg = ("ACCESS_KEY or SECRET_KEY not set in the environment."
+        self.msg = ("ACCESS_KEY or SECRET_KEY not set in the config properties file."
                     "Please export the variables as given in README.rst.")
         super(UnknownCredentials, self).__init__(self.msg)
 
