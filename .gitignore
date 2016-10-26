@@ -3,7 +3,8 @@ openrc
 *pub
 .venv/*
 openrc
-
+cscope.out
+tags
 
 *.py[cod]
 
