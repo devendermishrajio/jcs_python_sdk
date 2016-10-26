@@ -23,59 +23,59 @@
 from jcssdk import utils
 from jcssdk import requestify
 
-def attach_volume(url, verb, headers, version, instance_id, volume_id, device):
+def attach_volume(url, verb, headers, version, auth_info, is_secure, instance_id, volume_id, device):
     params = {}
     params['Action'] = 'AttachVolume'
     params['Version'] = version
     params['InstanceId'] = instance_id
     params['VolumeId'] = volume_id
     params['Device'] = device
-    return requestify.make_request(url, verb, headers, params)
+    return requestify.make_request(url, verb, headers, params, auth_info, is_secure)
 
-def detach_volume(url, verb, headers, version, volume_id, instance_id = ""):
+def detach_volume(url, verb, headers, version, auth_info, is_secure, volume_id, instance_id = ""):
     params = {}
     params['Action'] = 'DetachVolume'
     params['Version'] = version
     params['VolumeId'] = volume_id
     if not instance_id == "" :
     	params['InstanceId'] = instance_id
-    return requestify.make_request(url, verb, headers, params)
+    return requestify.make_request(url, verb, headers, params, auth_info, is_secure)
 
-def show_delete_on_termination_flag(url, verb, headers, version, volume_id):
+def show_delete_on_termination_flag(url, verb, headers, version, auth_info, is_secure, volume_id):
     params = {}
     params['Action'] = 'ShowDeleteOnTerminationFlag'
     params['Version'] = version
     params['VolumeId'] = volume_id
-    return requestify.make_request(url, verb, headers, params)
+    return requestify.make_request(url, verb, headers, params, auth_info, is_secure)
 
-def update_delete_on_termination_flag(url, verb, headers, version, volume_id, delete_on_termination):
+def update_delete_on_termination_flag(url, verb, headers, version, auth_info, is_secure, volume_id, delete_on_termination):
     params = {}
     params['Action'] = 'UpdateDeleteOnTerminationFlag'
     params['Version'] = version
     params['VolumeId'] = volume_id
     params['DeleteOnTermination'] = str(delete_on_termination)
-    return requestify.make_request(url, verb, headers, params)
+    return requestify.make_request(url, verb, headers, params, auth_info, is_secure)
 
-def create_volume(url, verb, headers, version, snapshot_id = "", size = -1):
+def create_volume(url, verb, headers, version, auth_info, is_secure, snapshot_id = "", size = -1):
     params = {}
     params['Action'] = 'CreateVolume'
     params['Version'] = version
     if not snapshot_id == "" :
     	params['SnapshotId'] = snapshot_id
 
-    if not size == -1 : 
+    if not size == -1 :
     	params['Size'] = str(size)
 
-    return requestify.make_request(url, verb, headers, params)
+    return requestify.make_request(url, verb, headers, params, auth_info, is_secure)
 
-def delete_volume(url, verb, headers, version, volume_id):
+def delete_volume(url, verb, headers, version, auth_info, is_secure, volume_id):
     params = {}
     params['Action'] = 'DeleteVolume'
     params['Version'] = version
     params['VolumeId'] = volume_id
-    return requestify.make_request(url, verb, headers, params)
+    return requestify.make_request(url, verb, headers, params, auth_info, is_secure)
 
-def describe_volumes(url, verb, headers, version, volume_ids = None, max_results = -1, next_token = "", detail = True):
+def describe_volumes(url, verb, headers, version, auth_info, is_secure, volume_ids = None, max_results = -1, next_token = "", detail = True):
     params = {}
     params['Action'] = 'DescribeVolumes'
     params['Version'] = version
@@ -94,5 +94,5 @@ def describe_volumes(url, verb, headers, version, volume_ids = None, max_results
 
    	params['Detail'] = str(detail)
 
-    return requestify.make_request(url, verb, headers, params)
+    return requestify.make_request(url, verb, headers, params, auth_info, is_secure)
 

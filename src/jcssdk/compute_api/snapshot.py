@@ -24,21 +24,21 @@ from jcssdk import utils
 from jcssdk import requestify
 
 
-def create_snapshot(url, verb, headers, version, volume_id):
+def create_snapshot(url, verb, headers, version, auth_info, is_secure, volume_id):
     params = {}
     params['Action'] = 'CreateSnapshot'
     params['Version'] = version
     params['VolumeId'] = volume_id
-    return requestify.make_request(url, verb, headers, params)
-    
-def delete_snapshot(url, verb, headers, version, snapshot_id):
+    return requestify.make_request(url, verb, headers, params, auth_info, is_secure)
+
+def delete_snapshot(url, verb, headers, version, auth_info, is_secure, snapshot_id):
     params = {}
     params['Action'] = 'DeleteSnapshot'
     params['Version'] = version
     params['SnapshotId'] = snapshot_id
-    return requestify.make_request(url, verb, headers, params)
+    return requestify.make_request(url, verb, headers, params, auth_info, is_secure)
 
-def describe_snapshots(url, verb, headers, version, snpashot_ids = None, max_results = -1, next_token = "", detail = True):
+def describe_snapshots(url, verb, headers, version, auth_info, is_secure, snpashot_ids = None, max_results = -1, next_token = "", detail = True):
     params = {}
     params['Action'] = 'DescribeSnapshots'
     params['Version'] = version
@@ -57,6 +57,6 @@ def describe_snapshots(url, verb, headers, version, snpashot_ids = None, max_res
 
    	params['Detail'] = str(detail)
 
-    return requestify.make_request(url, verb, headers, params)
+    return requestify.make_request(url, verb, headers, params, auth_info, is_secure)
 
 

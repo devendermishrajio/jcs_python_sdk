@@ -22,7 +22,6 @@
 
 import sys
 import requests
-from jcssdk import config
 from jcssdk.compute_api.model import ErrorResponse
 from xml.sax import parseString
 from jcssdk import auth_handler
@@ -32,7 +31,7 @@ common_headers = {
     'Accept-Encoding': 'identity',
 }
 
-def make_request(url, verb, headers, params, path=None, data=None):
+def make_request(url, verb, headers, params, auth_info, is_secure, path=None, data=None):
     """
     This method makes the actual request to JCS services. 
     The steps are:
@@ -45,8 +44,8 @@ def make_request(url, verb, headers, params, path=None, data=None):
 
     """
     try :
-        access_key = config.get_access_key()
-        secret_key = config.get_secret_key()
+        access_key = auth_info['access_key']
+        secret_key = auth_info['secret_key']
         # Always calculate signature without trailing '/' in url
         if url.endswith('/'):
             url = url[:-1]
@@ -62,9 +61,9 @@ def make_request(url, verb, headers, params, path=None, data=None):
         request_string = request_string[:-1]
         global common_headers
         headers.update(common_headers)
-        print request_string
+        #print request_string
         response = requests.request(verb, request_string, data=data, 
-                                verify=config.check_secure(),
+                                verify=is_secure,
                                 headers=headers)
 
         if response.status_code == 200:
@@ -72,13 +71,7 @@ def make_request(url, verb, headers, params, path=None, data=None):
         else:
             error_res = ErrorResponse.ErrorResponse()
             parseString(str(response.text), error_res)
-            print error_res.code
-            print error_res.message
             return None
     except Exception as e:
-        sys.stderr.write('Connection unsuccessful...!!\n')
-        sys.stderr.write(str(e))
-        sys.stderr.write("\n")
-        if config.check_debug():
-            raise
-        sys.exit(1)
+        raise Exception("Connection to %s is failed\n"%(url,))
+

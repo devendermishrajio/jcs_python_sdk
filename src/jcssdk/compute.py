@@ -18,7 +18,6 @@
 # WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 
-from jcssdk import config
 from jcssdk import utils
 from jcssdk.compute_api import image
 from jcssdk.compute_api import key_pair
@@ -62,11 +61,14 @@ class Controller(object):
     in list of args is the Action name
     """
 
-    def __init__(self):
-        self.url = config.get_service_url('compute')
+    def __init__(self, service_url, access_key, secret_key, is_secure=True version='2016-03-01'):
+        self.url = service_url
         self.headers = {}
         self.version = '2016-03-01'
         self.verb = 'GET'
+        self.is_secure = is_secure
+        self.auth_info['access_key'] = access_key
+        self.auth_info['secret_key'] = secret_key
 
     def describe_images(self, image_ids = None):
         """
@@ -75,11 +77,11 @@ class Controller(object):
 
         param args: Arguments passed to the function
 
-        The function expects either no input or a list of 
+        The function expects either no input or a list of
         specific images to describe
         """
         response = image.describe_images(self.url, self.verb, self.headers,
-                                     self.version, image_ids)
+                                     self.version, self.auth_info, self.is_secure, image_ids)
         if response is not None :
             res = DescribeImagesResponse.DescribeImagesResponse()
             parseString(str(response.text), res)
@@ -99,14 +101,14 @@ class Controller(object):
         input
         """
         response = key_pair.create_key_pair(self.url, self.verb, self.headers,
-                                        self.version, key_name)
+                                        self.version, self.auth_info, self.is_secure, key_name)
         if response is not None :
             res = CreateKeyPairResponse.CreateKeyPairResponse()
             parseString(str(response.text), res)
             return res
         else :
             return None
- 
+
     def delete_key_pair(self, key_name):
         """
         Delete a key pair from your account
@@ -117,7 +119,7 @@ class Controller(object):
         input
         """
         response = key_pair.delete_key_pair(self.url, self.verb, self.headers,
-                                        self.version, key_name)
+                                        self.version, self.auth_info, self.is_secure, key_name)
         if response is not None :
             res = DeleteKeyPairResponse.DeleteKeyPairResponse()
             parseString(str(response.text), res)
@@ -134,7 +136,7 @@ class Controller(object):
         The function expects no arguments
         """
         response = key_pair.describe_key_pairs(self.url, self.verb,
-                                           self.headers, self.version)
+                                           self.headers, self.version, self.auth_info, self.is_secure)
         if response is not None :
             res = DescribeKeyPairsResponse.DescribeKeyPairsResponse()
             parseString(str(response.text), res)
@@ -154,7 +156,7 @@ class Controller(object):
         2. Public Key Material in base64 encoded form
         """
         response = key_pair.import_key_pair(self.url, self.verb, self.headers,
-                                        self.version, key_name, public_key_material)
+                                        self.version, self.auth_info, self.is_secure, key_name, public_key_material)
         if response is not None :
             res = ImportKeyPairsResponse.ImportKeyPairsResponse()
             parseString(str(response.text), res)
@@ -175,7 +177,7 @@ class Controller(object):
            be selected.
         """
         response = instance.describe_instances(self.url, self.verb,
-                                           self.headers, self.version, instance_ids)
+                                           self.headers, self.version, self.auth_info, self.is_secure, instance_ids)
         if response is not None :
             res = DescribeInstancesResponse.DescribeInstancesResponse()
             parseString(str(response.text), res)
@@ -193,7 +195,7 @@ class Controller(object):
         be stopped.
         """
         response = instance.stop_instances(self.url, self.verb,
-                                       self.headers, self.version, instance_ids)
+                                       self.headers, self.version, self.auth_info, self.is_secure, instance_ids)
         if response is not None :
             res = StopInstancesResponse.StopInstancesResponse()
             parseString(str(response.text), res)
@@ -211,7 +213,7 @@ class Controller(object):
         be started.
         """
         response = instance.start_instances(self.url, self.verb,
-                                        self.headers, self.version, instance_ids)
+                                        self.headers, self.version, self.auth_info, self.is_secure, instance_ids)
         if response is not None :
             res = StartInstancesResponse.StartInstancesResponse()
             parseString(str(response.text), res)
@@ -229,7 +231,7 @@ class Controller(object):
         be rebooted.
         """
         response = instance.reboot_instances(self.url, self.verb,
-                                         self.headers, self.version, instance_ids)
+                                         self.headers, self.version, self.auth_info, self.is_secure, instance_ids)
         if response is not None :
             res = RebootInstancesResponse.RebootInstancesResponse()
             parseString(str(response.text), res)
@@ -247,8 +249,7 @@ class Controller(object):
         be terminated.
         """
         response = instance.terminate_instances(self.url, self.verb,
-                                            self.headers, self.version,
-                                            instance_ids)
+                                            self.headers, self.version, self.auth_info, self.is_secure, instance_ids)
         if response is not None :
             res = TerminateInstancesResponse.TerminateInstancesResponse()
             parseString(str(response.text), res)
@@ -258,20 +259,19 @@ class Controller(object):
 
     def get_password_data(self, instance_id, private_key_file = None, passphrase = None):
         """
-        Get password for instance in your account. You 
-        need to also provide the private key file to 
+        Get password for instance in your account. You
+        need to also provide the private key file to
         get unencrypted password data.
 
         param args: Arguments passed to the function
 
-        The function expects the following as input 
+        The function expects the following as input
         1. Instance id
         2. Private key file path (Optional)
         3. Passphrase (incase one is set for the key file)
         """
         response = instance.get_password_data(self.url, self.verb,
-                                          self.headers, self.version,
-                                          instance_id)
+                                          self.headers, self.version, self.auth_info, self.is_secure, instance_id)
         if response is not None :
             res = GetPasswordDataResponse.GetPasswordDataResponse()
             parseString(str(response.text), res)
@@ -287,12 +287,12 @@ class Controller(object):
 
         param args: Arguments passed to the function
 
-        The function expects either no input or a list of 
+        The function expects either no input or a list of
         specific instance types to describe
         """
         response = instance.describe_instance_types(self.url, self.verb,
                                                 self.headers,
-                                                self.version, instance_type_ids)
+                                                self.version, self.auth_info, self.is_secure, instance_type_ids)
         if response is not None :
             res = DescribeInstanceTypesResponse.DescribeInstanceTypesResponse()
             parseString(str(response.text), res)
@@ -300,7 +300,7 @@ class Controller(object):
         else :
             return None
 
-    def run_instances(self, image_id, instance_type_id, blocks = None, instance_count = -1, subnet_id = "", 
+    def run_instances(self, image_id, instance_type_id, blocks = None, instance_count = -1, subnet_id = "",
     private_ip_address = "", security_group_ids = None, key_name = ""):
         """
         Launch specified number of instances in your
@@ -319,7 +319,9 @@ class Controller(object):
         8. block device mapping (optional)
         """
         response = instance.run_instances(self.url, self.verb, self.headers,
-                                      self.version, image_id, instance_type_id, blocks, instance_count, subnet_id, private_ip_address, security_group_ids, key_name)
+                                      self.version, self.auth_info, self.is_secure,
+                                      image_id, instance_type_id, blocks, instance_count, subnet_id,
+                                      private_ip_address, security_group_ids, key_name)
         if response is not None :
             res = RunInstancesResponse.RunInstancesResponse()
             print response.text
@@ -341,7 +343,7 @@ class Controller(object):
         3. Device name
         """
         response = volume.attach_volume(self.url, self.verb, self.headers,
-                                    self.version, instance_id, volume_id, device)
+                                    self.version, self.auth_info, self.is_secure, instance_id, volume_id, device)
         if response is not None :
             res = AttachVolumeResponse.AttachVolumeResponse()
             parseString(str(response.text), res)
@@ -361,7 +363,7 @@ class Controller(object):
         3. Force (optional)
         """
         response = volume.detach_volume(self.url, self.verb, self.headers,
-                                    self.version, volume_id, instance_id)
+                                    self.version, self.auth_info, self.is_secure, volume_id, instance_id)
         if response is not None :
             res = DetachVolumeResponse.DetachVolumeResponse()
             parseString(str(response.text), res)
@@ -380,7 +382,7 @@ class Controller(object):
         """
         response = volume.show_delete_on_termination_flag(self.url,
                                        self.verb, self.headers,
-                                       self.version, volume_id)
+                                       self.version, self.auth_info, self.is_secure, volume_id)
         if response is not None :
             res = ShowDeleteOnTerminationFlagResponse.ShowDeleteOnTerminationFlagResponse()
             parseString(str(response.text), res)
@@ -401,7 +403,7 @@ class Controller(object):
         """
         response = volume.update_delete_on_termination_flag(self.url,
                                          self.verb, self.headers,
-                                         self.version, volume_id, delete_on_termination)
+                                         self.version, self.auth_info, self.is_secure, volume_id, delete_on_termination)
         if response is not None :
             res = UpdateDeleteOnTerminationFlagResponse.UpdateDeleteOnTerminationFlagResponse()
             parseString(str(response.text), res)
@@ -412,7 +414,7 @@ class Controller(object):
     def create_volume(self, snapshot_id = "", size = -1):
         """
         Create a new volume which can be attached to an instance.
-        This volume can be created empty or from an existing 
+        This volume can be created empty or from an existing
         snapshot.
 
         param args: Arguments passed to the function
@@ -422,7 +424,7 @@ class Controller(object):
         2. Snapshot Id
         """
         response = volume.create_volume(self.url, self.verb,
-                                    self.headers, self.version,
+                                    self.headers, self.version, self.auth_info, self.is_secure, instance_ids)
                                     snapshot_id, size)
         if response is not None :
             res = CreateVolumeResponse.CreateVolumeResponse()
@@ -441,7 +443,7 @@ class Controller(object):
         The function expects volume id to be deleted
         """
         response = volume.delete_volume(self.url, self.verb,
-                                    self.headers, self.version,
+                                    self.headers, self.version, self.auth_info, self.is_secure, instance_ids)
                                     volume_id)
         if response is not None :
             res = DeleteVolumeResponse.DeleteVolumeResponse()
@@ -464,7 +466,7 @@ class Controller(object):
         4. Detail - by default this is true. Set to false to
            suppress detail
         """
-        response = volume.describe_volumes(self.url, self.verb, self.headers, self.version, 
+        response = volume.describe_volumes(self.url, self.verb, self.headers, self.version, self.auth_info, self.is_secure,
                                 volume_ids, max_results, next_token, detail)
         if response is not None :
             res = DescribeVolumesResponse.DescribeVolumesResponse()
@@ -480,12 +482,12 @@ class Controller(object):
         param args: Arguments passed to the function
 
         The function expects either of the following -
-        Volume Id 
+        Volume Id
         """
         response = snapshot.create_snapshot(self.url, self.verb,
-                                    self.headers, self.version,
+                                    self.headers, self.version, self.auth_info, self.is_secure, instance_ids)
                                     volume_id)
-        
+
         if response is not None :
             res = CreateSnapshotResponse.CreateSnapshotResponse()
             parseString(str(response.text), res)
@@ -503,7 +505,7 @@ class Controller(object):
         The function expects snapshot id to be deleted
         """
         response = snapshot.delete_snapshot(self.url, self.verb,
-                                    self.headers, self.version,
+                                    self.headers, self.version, self.auth_info, self.is_secure, instance_ids)
                                     snapshot_id)
         if response is not None :
             res = DeleteSnapshotResponse.DeleteSnapshotResponse()
@@ -526,10 +528,10 @@ class Controller(object):
         4. Detail - by default this is true. Set to false to
            suppress detail
         """
-        response = snapshot.describe_snapshots(self.url, self.verb, self.headers, self.version,
+        response = snapshot.describe_snapshots(self.url, self.verb, self.headers, self.version, self.auth_info, self.is_secure, instance_ids,
                                     snpashot_ids, max_results, next_token, detail)
         if response is not None :
-            res = DescribeSnapshotsResponse.DescribeSnapshotsResponse() 
+            res = DescribeSnapshotsResponse.DescribeSnapshotsResponse()
             parseString(str(response.text), res)
             return res
         else :

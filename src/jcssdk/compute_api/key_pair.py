@@ -4,7 +4,7 @@
 # copy of this software and associated documentation files (the
 # "Software"), to deal in the Software without restriction, including
 # without limitation the rights to use, copy, modify, merge, publish, dis-
-# tribute, sublicense, and/or sell copies of the Software, and to permit
+# tribute, sublicense, and/or sell copies of the Software, and to permi
 # persons to whom the Software is furnished to do so, subject to the fol-
 # lowing conditions:
 #
@@ -24,31 +24,31 @@ import argparse
 from jcssdk import utils
 from jcssdk import requestify
 
-def create_key_pair(url, verb, headers, version, key_name ):
+def create_key_pair(url, verb, headers, version, auth_info, is_secure, key_name ):
     params = {}
-    params['Action'] = 'CreateKeyPair'                    
+    params['Action'] = 'CreateKeyPair'
     params['Version'] = version
     params['KeyName'] = key_name
-    return requestify.make_request(url, verb, headers, params) 
+    return requestify.make_request(url, verb, headers, params, auth_info, is_secure)
 
-def delete_key_pair(url, verb, headers, version, key_name):
+def delete_key_pair(url, verb, headers, version, auth_info, is_secure, key_name):
     params = {}
-    params['Action'] = 'DeleteKeyPair'                    
+    params['Action'] = 'DeleteKeyPair'
     params['Version'] = version
     params['KeyName'] = key_name
-    return requestify.make_request(url, verb, headers, params)
+    return requestify.make_request(url, verb, headers, params, auth_info, is_secure)
 
 def describe_key_pairs(url, verb, headers, version):
     params = {}
-    params['Action'] = 'DescribeKeyPairs'                    
+    params['Action'] = 'DescribeKeyPairs'
     params['Version'] = version
-    return requestify.make_request(url, verb, headers, params)
+    return requestify.make_request(url, verb, headers, params, auth_info, is_secure)
 
-def import_key_pair(url, verb, headers, version, key_name, public_key_material): 
+def import_key_pair(url, verb, headers, version, auth_info, is_secure, key_name, public_key_material):
     params = {}
-    params['Action'] = 'ImportKeyPair'                    
+    params['Action'] = 'ImportKeyPair'
     params['Version'] = version
     params['KeyName'] = key_name
     params['PublicKeyMaterial'] = public_key_material
-    return requestify.make_request(url, verb, headers, params) 
+    return requestify.make_request(url, verb, headers, params, auth_info, is_secure)
 
